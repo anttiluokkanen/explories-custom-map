@@ -261,6 +261,8 @@ function get_one( \WP_REST_Request $request ) {
         }
 
         if ( $response ) {
+            $img = wp_get_attachment_image_src( get_post_meta( $id, '_ecm_img_id', true ), 'full' );
+            $response['image'] = ! empty( $img ) ? $img : ( get_the_post_thumbnail_url( $id ) ? get_the_post_thumbnail_url( $id, 'full' ) : null );
             $response['content'] = apply_filters('the_content', get_post_field( 'post_content', $id ) );
             return $response;
         }

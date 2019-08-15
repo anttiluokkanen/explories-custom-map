@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<title>Explories Custom Map</title>
+
+<link rel="stylesheet" href="vendor/prism-1.16.0/prism-one-dark.css" />
+<link rel="stylesheet" href="css/ecm-documentation.css?v=20190326" />
+
+<script src="../vendor/jquery-3.3.1.min.js"></script>
+<script src="vendor/prism-1.16.0/prism.js"></script>
+<script src="js/ecm-documentation.js?v=20190326"></script>
+
+</head>
+
+<body>
+
+<header>
+    <button id="menuBtn" type="button">
+        <span class="sr-only">Toggle menu</span>
+    </button>
+    <img src="images/explories-landscape-white.svg" alt="Explories" />
+</header>
+
+<nav>
+    <ul></ul>
+</nav>
+
+<main class="container">
+
+    <section id="intro">
+
+        <h1>Explories Custom Map</h1>
+
+        <p>This is the Explories Custom Map (ECM) documentation. <strong>It is still very much under construction!</strong></p>
+
+    </section>
+
+
+
+    <section id="package-contents">
+
+        <h2>Package contents</h2>
+
+        <pre class="light"><code>ecm-custom-map/
+    css/
+        ecm.css
+        ecm.min.css
+    documentation/
+        css/
+        doc-code-snippets/
+        examples/
+        images/
+        js/
+        vendor/
+        index.html
+    images/
+    js/
+    themes/
+        default/
+    vendor/
+    markerclusterer-1.0.1/
+    svg-injector-1.1.3/
+    jquery-3.3.1.min.js</code></pre>
+
+    <p><em>TO DO: Explanation about the package directory structure.</em></p>
+
+    </section>
+
+
+
+    <section id="getting-started">
+
+        <h2>Getting started</h2>
+
+        <h3>1. Include JavaScript files</h3>
+
+        <p>Include jQuery, ECM js and Google Maps in anywhere in the head or body of your HTML document:</p>
+
+        <pre class="language-html" data-src="doc-code-snippets/include-ecm-and-gm.html"></pre>
+
+        <p><strong>jQuery:</strong> ECM requires jQuery. If your site uses jQuery already please include it before the ECM js file. If you're site doesn't use jQuery already you may inlcude it from the ECM package vendor directory or jQuery CDN.</p>
+
+        <p><strong>ECM JavaScript:</strong> The ECM script element must have id attribute with value <em>ecmScript</em>.</p>
+
+        <p><strong>Google Maps:</strong> ECM requires Google Maps API. The Google Maps API script element must have the callback parameter with value <em>ECM.init</em>. ECM requires the following Google APIs enabled for your API key:</p>
+
+        <ul>
+            <li>Maps JavaScript API</li>
+            <li>Directions API (only if using routes with travelMode enabled)</li>
+        </ul>
+
+        <p></p>
+
+        <h3>2. Include ECM styleheet</h3>
+
+        <p>Include ECM stylesheet in the head of your HTML document:</p>
+
+        <pre class="language-html" data-src="doc-code-snippets/include-ecm-css.html"></pre>
+
+        <p>This is the common stylesheet for ECM. All theme specific styles are in a separate theme stylesheet which is loaded automatically (please see chapter <a href="#theme-styles" class="scroll-to">Theme styles</a> for more information).</p>
+
+        <h3>3. Add markup</h3>
+
+        <p>Add a div element for ECM in your HTML document body. The div element must have an id attribute with value <em>ecm</em>.</p>
+
+        <pre class="language-html" data-src="doc-code-snippets/add-markup.html"></pre>
+
+    </section>
+
+
+    <section id="configuration">
+
+        <h2>Configuration</h2>
+
+        <p>Configuration is set with div element data attributes and theme configuration file. Depending on the system you use, these settings may be configurable in your CMS (for example WordPress) dashboard.</p>
+
+        <h3>Div element data attributes</h3>
+
+        <pre class="language-html" data-src="doc-code-snippets/div-el-attributes.html"></pre>
+
+        <table class="table-attributes">
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th class="text-right">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>data-theme</td>
+                    <td class="text-right">Local theme directory name if using a custom theme.</td>
+                </tr>
+                <tr>
+                    <td>data-theme-key</td>
+                    <td class="text-right">External theme key. This is used to load the theme from explories.net server.</td>
+                </tr>
+                <tr>
+                    <td>data-lan</td>
+                    <td class="text-right">ECM language.</td>
+                </tr>
+                <tr>
+                    <td>data-offset-top</td>
+                    <td class="text-right">ECM offset from the top of document body. If for example the site header height is 80px the data-offset-top value should be "80px".</td>
+                </tr>
+                <tr>
+                    <td>data-feed</td>
+                    <td class="text-right">If given with any value, for example data-feed=&quot;true&quot;, ECM will initialize with feed mode on.</td>
+                </tr>
+                <tr>
+                    <td>data-article</td>
+                    <td class="text-right">The id of an Explores article which is opened to ECM internal article view on init.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 id="theme-config">Theme configuration file</h3>
+
+        <p>Default configuration can be overriden in theme configuration file located in <em>themes/themename/config.js</em>. The configuration file consists of two function calls: <em>setConfig</em> and <em>setTexts</em>. To these are passed options objects. Properties defined in the options objects will override default values.</p>
+
+        <pre class="language-js" data-src="doc-code-snippets/theme-config.js"></pre>
+
+        <h4>Config options</h4>
+
+        <pre class="language-js" data-src="doc-code-snippets/default-config.js"></pre>
+
+        <table class="table-properties">
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th class="text-right">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>markersUrl</td>
+                    <td>string</td>
+                    <td>'markers.json'</td>
+                    <td class="text-right">Absolute or relative URL to load markers. Parameter <em>lan</em> can be marked in the url with brackets (for example <em>path/to/markers.php?lan={lan}</em>) and it's value is replaced with ECM config.lan.</td>
+                </tr>
+                <tr>
+                    <td>routesUrl</td>
+                    <td>string</td>
+                    <td>'routes.json'</td>
+                    <td class="text-right">Absolute or relative URL to load routes. Parameter <em>lan</em> can be marked in the url with brackets (for example <em>path/to/routes.php?lan={lan}</em>) and it's value is replaced with ECM config.lan.</td>
+                </tr>
+                <tr>
+                    <td>initMode</td>
+                    <td>string</td>
+                    <td>null</td>
+                    <td class="text-right">The initial mode name.</td>
+                </tr>
+                <tr>
+                    <td>lan</td>
+                    <td>string</td>
+                    <td>'fi'</td>
+                    <td class="text-right">Default language identifier.</td>
+                </tr>
+                <tr>
+                    <td>initLocation</td>
+                    <td>object</td>
+                    <td>{
+                        lat: 60.169872,
+                        lng: 24.938099
+                    }</td>
+                    <td class="text-right">Map initial location: <em>{lat: number, lng: 27.132753}</em>.</td>
+                </tr>
+                <tr>
+                    <td>cardDefaultImg</td>
+                    <td>string</td>
+                    <td>'absolute/path/to/themes/default/images/default-img.jpg'</td>
+                    <td class="text-right">Absolute or relative path to card default image. Use empty string for no default image.</td>
+                </tr>
+                <tr>
+                    <td>externalMarkers</td>
+                    <td>object</td>
+                    <td>null</td>
+                    <td class="text-right"><a href="#external-markers" class="scroll-to">External markers object</a>.</td>
+                </tr>
+                <tr>
+                    <td>mapDefaultTravelMode</td>
+                    <td>string</td>
+                    <td>'WALKING'</td>
+                    <td class="text-right">Default travel mode for routes using Google Maps Directions API.</td>
+                </tr>
+                <tr>
+                    <td>mapLayers</td>
+                    <td>array</td>
+                    <td>null</td>
+                    <td class="text-right">Array of <a href="#map-layers" class="scroll-to">map layer objects</a>.</td>
+                </tr>
+                <tr>
+                    <td>mapInitZoom</td>
+                    <td>number</td>
+                    <td>10</td>
+                    <td class="text-right">Google Maps initial zoom level.</td>
+                </tr>
+                <tr>
+                    <td>mapMinZoom</td>
+                    <td>number</td>
+                    <td>0</td>
+                    <td class="text-right">Google Maps minimum zoom level.</td>
+                </tr>
+                <tr>
+                    <td>mapMaxZoom</td>
+                    <td>number</td>
+                    <td>21</td>
+                    <td class="text-right">Google Maps maximum zoom level.</td>
+                </tr>
+                <tr>
+                    <td>mapTypeId</td>
+                    <td>string</td>
+                    <td>'roadmap'</td>
+                    <td class="text-right">The initial map type for Google Maps. Possible values are <em>roadmap</em>, <em>satellite</em>, <em>hybrid</em> and <em>terrain</em>. See Google Maps API <a href="https://developers.google.com/maps/documentation/javascript/maptypes" target="_blank">Map Types</a> for more information.</td>
+                </tr>
+                <tr>
+                    <td>mapTypes</td>
+                    <td>array</td>
+                    <td>['roadmap',<br />
+                    'satellite',<br />
+                    'hybrid',<br Y>
+                    'terrain']</td>
+                    <td class="text-right">Array of <a href="https://developers.google.com/maps/documentation/javascript/maptypes" target="_blank">map types</a> to be shown in the map type select.</td>
+                </tr>
+                <tr>
+                    <td>mapRouteMarkersThreshold</td>
+                    <td>number</td>
+                    <td>12</td>
+                    <td class="text-right">Map zoom level threshold for showin route waypoint markers.</td>
+                </tr>
+                <tr>
+                    <td>modes</td>
+                    <td>object</td>
+                    <td>null</td>
+                    <td class="text-right">Map <a href="#map-modes" class="scroll-to">modes object</a>. Map modes defined here are shown as map mode selection buttons.</td>
+                </tr>
+                <tr>
+                    <td>offsetTop</td>
+                    <td>string</td>
+                    <td>'auto'</td>
+                    <td class="text-right">CSS value ('50px', '2rem', '10%' etc.) for ECM element offset from body top. Value 'auto' uses the height of the element selector defined by property <em>offsetTopSel</em></td>
+                </tr>
+                <tr>
+                    <td>offsetTopSel</td>
+                    <td>string</td>
+                    <td>'header'</td>
+                    <td class="text-right">CSS selector to define the element used to set ECM element offset from body top if <em>offsetTop</em> is set to 'auto'.</td>
+                </tr>
+                <tr>
+                    <td>showBadgeFilters</td>
+                    <td>boolean</td>
+                    <td>true</td>
+                    <td class="text-right">Badge filters are shown if set to true.</td>
+                </tr>
+                <tr>
+                    <td>showMapFeedToggle</td>
+                    <td>boolean</td>
+                    <td>true</td>
+                    <td class="text-right">Map/Feed toggle button is shown if set to true.</td>
+                </tr>
+                <tr>
+                    <td>showModeButtons</td>
+                    <td>boolean</td>
+                    <td>true</td>
+                    <td class="text-right">Mode buttons are shown if set to true.</td>
+                </tr>
+                <tr>
+                    <td>showPrint</td>
+                    <td>boolean</td>
+                    <td>false</td>
+                    <td class="text-right">Print button is shown if set to true.</td>
+                </tr>
+                <tr>
+                    <td>showTagFilters</td>
+                    <td>boolean</td>
+                    <td>true</td>
+                    <td class="text-right">Tag filters are shown if set to true.</td>
+                </tr>
+                <tr>
+                    <td>showTypeFilters</td>
+                    <td>boolean</td>
+                    <td>true</td>
+                    <td class="text-right">Type filters are shown if set to true.</td>
+                </tr>
+                <tr>
+                    <td>usePlugin</td>
+                    <td>boolean</td>
+                    <td>false</td>
+                    <td class="text-right">If set to true, the ECM WordPress plugin config is loaded after theme config.</td>
+                </tr>
+                <tr>
+                    <td>userPosInterval</td>
+                    <td>number</td>
+                    <td>5000</td>
+                    <td class="text-right">The interval in milliseconds how often user position is updated on the map.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 id="ui-texts">Texts options</h3>
+
+        <pre class="language-js" data-src="doc-code-snippets/default-texts.js"></pre>
+
+    </section>
+
+
+
+    <section id="markers">
+
+        <h2>Markers</h2>
+
+        <p>Markers are defined in an array of marker objects in <a href="https://en.wikipedia.org/wiki/JSON" target="_blank">json format</a>. The example below shows a marker object with all possible properties. Marker properties are listed below.</p>
+
+        <pre class="language-json" data-src="doc-code-snippets/marker.js"></pre>
+
+        <h3>Marker properties</h3>
+
+        <table class="table-properties">
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th class="text-right">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>id</td>
+                    <td>number</td>
+                    <td class="text-right">Marker unique identifier.</td>
+                </tr>
+                <tr>
+                    <td>title</td>
+                    <td>string</td>
+                    <td class="text-right">Marker title which is displayed as a heading in the marker info window.</td>
+                </tr>
+                <tr>
+                    <td>image</td>
+                    <td>string</td>
+                    <td class="text-right">Absolute or relative path to an image file to be shown in the marker info window.</td>
+                </tr>
+                <tr>
+                    <td>latitude</td>
+                    <td>number</td>
+                    <td class="text-right">Marker latitude. Latitude ranges between -90 and 90 degrees, inclusive. Values above or below this range will be clamped to the range [-90, 90]. This means that if the value specified is less than -90, it will be set to -90. And if the value is greater than 90, it will be set to 90.</td>
+                </tr>
+                <tr>
+                    <td>longitude</td>
+                    <td>number</td>
+                    <td class="text-right">Marker longitude. Longitude ranges between -180 and 180 degrees, inclusive. Values above or below this range will be wrapped so that they fall within the range. For example, a value of -190 will be converted to 170. A value of 190 will be converted to -170. This reflects the fact that longitudes wrap around the globe.</td>
+                </tr>
+                <tr>
+                    <td>url</td>
+                    <td>string</td>
+                    <td class="text-right">Absolute or relative url which is opened by clicking the marker info window content.</td>
+                </tr>
+                <tr>
+                    <td>target</td>
+                    <td>string</td>
+                    <td class="text-right">The target for the link defined by property url. Use &quot;_blank&quot; to open the link in a new browser window/tab.</td>
+                </tr>
+                <tr>
+                    <td>icon</td>
+                    <td>string</td>
+                    <td class="text-right">Absolute or relative path to an image file to be used as the marker icon.</td>
+                </tr>
+                <tr>
+                    <td>modes</td>
+                    <td>array</td>
+                    <td class="text-right">Array of map mode name strings to define the map modes in which to show this marker. If modes array is not defined this marker will be shown in all map modes.</td>
+                </tr>
+                <tr>
+                    <td>tags</td>
+                    <td>array</td>
+                    <td class="text-right">Array of <a href="#tags" class="scroll-to">tag objects</a> associated with this marker. Tag icons are shown in the marker info window. If any filters are set this marker will be shown only if filter settings match the tags.</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </section>
+
+
+
+    <section id="routes">
+
+        <h2>Routes</h2>
+
+        <p>Routes are defined in an array of route objects in <a href="https://en.wikipedia.org/wiki/JSON" target="_blank">json format</a>. The example below shows a route object with all possible properties. Route properties are listed below.</p>
+
+        <pre class="language-json" data-src="doc-code-snippets/route.js"></pre>
+
+        <h3>Route properties</h3>
+
+        <table class="table-properties">
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th class="text-right">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>id</td>
+                    <td>number</td>
+                    <td class="text-right">Route unique identifier.</td>
+                </tr>
+                <tr>
+                    <td>title</td>
+                    <td>string</td>
+                    <td class="text-right">Route title which is displayed as a heading in the route info window.</td>
+                </tr>
+                <tr>
+                    <td>description</td>
+                    <td>string</td>
+                    <td class="text-right">Route description which is displayed in the route info window.</td>
+                </tr>
+                <tr>
+                    <td>image</td>
+                    <td>string</td>
+                    <td class="text-right">Absolute or relative path to an image file to be shown in the route info window.</td>
+                </tr>
+                <tr>
+                    <td>url</td>
+                    <td>string</td>
+                    <td class="text-right">Absolute or relative url which is opened by clicking the route info window content.</td>
+                </tr>
+                <tr>
+                    <td>target</td>
+                    <td>string</td>
+                    <td class="text-right">The target for the link defined by property url. Use &quot;_blank&quot; to open the link in a new browser window/tab.</td>
+                </tr>
+                <tr>
+                    <td>polylineOptions</td>
+                    <td>object</td>
+                    <td class="text-right">Polyline options object to define the style of the route polyline.</td>
+                </tr>
+                <tr>
+                    <td>modes</td>
+                    <td>array</td>
+                    <td class="text-right">Array of map mode name strings to define the map modes in which to show this route. If modes array is not defined this route will be shown in all map modes.</td>
+                </tr>
+                <tr>
+                    <td>tags</td>
+                    <td>array</td>
+                    <td class="text-right">Array of <a href="#tags" class="scroll-to">tag objects</a> associated with this route. Tag icons are shown in the route info window. If any filters are set this route will be shown only if filter settings match the tags.</td>
+                </tr>
+                <tr>
+                    <td>badges</td>
+                    <td>array</td>
+                    <td class="text-right">Array of <a href="#badges" class="scroll-to">badge objects</a> associated with this route. Badges are shown in the route info window. If any filters are set this route will be shown only if filter settings match the badges. Badges can be styled via theme CSS.</td>
+                </tr>
+                <tr>
+                    <td>tags</td>
+                    <td>array</td>
+                    <td class="text-right">Array of <a href="#tags" class="scroll-to">tag objects</a> associated with this route. Tag icons are shown in the route info window. If any filters are set this route will be shown only if filter settings match the tags.</td>
+                </tr>
+                <tr>
+                    <td>waypoints</td>
+                    <td>array</td>
+                    <td class="text-right">Array of waypoints as <a href="https://developers.google.com/maps/documentation/javascript/reference/coordinates#LatLngLiteral" target="_blank">LatLngLiteral objects</a> defining this route.</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </section>
+
+
+
+    <section id="tags">
+
+        <h2>Tags</h2>
+
+        <pre class="language-json" data-src="doc-code-snippets/tag.js"></pre>
+
+        <h3>Tag properties</h3>
+
+        <p><em>TO DO: Tag properties</em></p>
+
+    </section>
+
+
+
+    <section id="badges">
+
+        <h2>Badges</h2>
+
+        <pre class="language-json" data-src="doc-code-snippets/badge.js"></pre>
+
+        <h3>Badge properties</h3>
+
+        <p><em>TO DO: Badge properties</em></p>
+
+    </section>
+
+
+
+    <section id="map-modes">
+
+        <h2>Map modes</h2>
+
+        <p><em>TO DO</em></p>
+
+    </section>
+
+
+    <section id="external-markers">
+
+        <h2>External markers</h2>
+
+        <p>Map markers loaded from external sources are defined in the <em>External markers</em> object in the <a href="#theme-configuration" class="scroll-to">theme configuration file</a>. The example below defines one set of external markers to be loaded via Explories API.</p>
+
+        <p>externalMarkersSets: TO DO</p>
+
+        <p>Each external marker set is defined with unique property name. The marker set label can be defined in the configuration texts options with the corresponding property name.</p>
+
+        <pre class="language-js" data-src="doc-code-snippets/external-markers.js"></pre>
+
+        <p>Parameter values <em>{lat}</em> and <em>{lng}</em> are replaced by <em>config.initLocation.lat</em> and <em>config.initLocation.lng</em> automatically.</p>
+
+        <h3>Marker set object properties</h3>
+
+        <table class="table-properties">
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th class="text-right">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>url</td>
+                    <td>string</td>
+                    <td class="text-right">Url from where the markers data is loaded.</td>
+                </tr>
+                <tr>
+                    <td>iconW</td>
+                    <td>number</td>
+                    <td class="text-right">Marker icon width in pixels.</td>
+                </tr>
+                <tr>
+                    <td>iconH</td>
+                    <td>number</td>
+                    <td class="text-right">Marker icon height in pixels.</td>
+                </tr>
+                <tr>
+                    <td>checked</td>
+                    <td>boolean</td>
+                    <td class="text-right">Wheater to load these markers on init or not.</td>
+                </tr>
+                <tr>
+                    <td>reloadOnBoundsChange</td>
+                    <td>boolean</td>
+                    <td class="text-right">Wheater to reload these markers on Google Maps bound change or not.</td>
+                </tr>
+                <tr>
+                    <td>callbackName</td>
+                    <td>string</td>
+                    <td class="text-right">Name of the callback function to be called after the markers have been loaded. This is used to convert external data to a format understandable to ECM. Each different source must have it's own conversion function coded in ECM.</td>
+                </tr>
+                <tr>
+                    <td>articleViewUrl</td>
+                    <td>string</td>
+                    <td class="text-right">If external markers are Explories articles they can be opened in ECM internal article view. This articleViewUrl defines the url to the article view configured ECM page. Url can have parameters <em>id</em> and <em>slug</em> defined with curly braces, for example https://path/to/map/{id}/{slug}.</td>
+                </tr>
+                <tr>
+                    <td>external</td>
+                    <td>boolean</td>
+                    <td class="text-right">Wheater to mark these markers with style external or not.</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </section>
+
+
+
+    <section id="map-layers">
+
+        <h2>Map layers</h2>
+
+        <p>Map layers loaded from external sources are defined in the <em>mapLayers</em> array in the <a href="#theme-config" class="scroll-to">theme configuration file</a>. The example below defines a map layer object using <a href="https://wiki.openstreetmap.org/wiki/OpenTopoMap" target="_blank">OpenTopoMap</a> API.</p>
+
+        <pre class="language-js" data-src="doc-code-snippets/map-layers.js"></pre>
+
+        <h3>Map layer properties</h3>
+
+        <table class="table-properties">
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th class="text-right">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>name</td>
+                    <td>string</td>
+                    <td class="text-right">Map layer unique name. Name must be a valid JavaScript identifier, i.e. a sequence of alphanumerical characters, also including the underscore (&quot;_&quot;) and dollar sign (&quot;$&quot;), that cannot start with a number.</td>
+                </tr>
+                <tr>
+                    <td>type</td>
+                    <td>string</td>
+                    <td class="text-right">Possible values are &quot;imageMapType&quot; and &quot;kml&quot;. See Google Maps API documentation for more information about <a href="https://developers.google.com/maps/documentation/javascript/maptypes#ImageMapTypes" target="_blank">Image Map Type</a> and <a href="https://developers.google.com/maps/documentation/javascript/examples/layer-kml" target="_blank">KML Layers</a></td>
+                </tr>
+                <tr>
+                    <td>url</td>
+                    <td>string</td>
+                    <td class="text-right">Map layer API url where to load the tiles. Parameters <em>zoom</em>, <em>x</em> and <em>y</em> in the url are marked with brackets.</td>
+                </tr>
+                <tr>
+                    <td>minZoom</td>
+                    <td>number</td>
+                    <td class="text-right">Minimum Google Maps zoom level to use this map layer.</td>
+                </tr>
+                <tr>
+                    <td>maxZoom</td>
+                    <td>number</td>
+                    <td class="text-right">Maximum Google Maps zoom level to use this map layer.</td>
+                </tr>
+                <tr>
+                    <td>bounds</td>
+                    <td>array</td>
+                    <td class="text-right">Bounds for this map layer. If the Google Maps view if out of these bounds this map layer is not used. Bounds array format is <em>[SouthWestLng, SouthWestLat, NortEastLng, NorthEastLat]</em>.</td>
+                </tr>
+                <tr>
+                    <td>checked</td>
+                    <td>boolean</td>
+                    <td class="text-right">Defines if this map layer is on by default.</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </section>
+
+
+
+    <section id="polyline-options">
+
+        <h2>Polyline options</h2>
+
+        <pre class="language-json" data-src="doc-code-snippets/polyline-options.js"></pre>
+
+        <h3>Polyline options properties</h3>
+
+        <table class="table-properties">
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th class="text-right">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>strokeColor</td>
+                    <td>string</td>
+                    <td class="text-right">The stroke color. All CSS3 colors are supported except for extended named colors.</td>
+                </tr>
+                <tr>
+                    <td>strokeOpacity</td>
+                    <td>number</td>
+                    <td class="text-right">The stroke opacity between 0.0 and 1.0.</td>
+                </tr>
+                <tr>
+                    <td>strokeWeight</td>
+                    <td>number</td>
+                    <td class="text-right">The stroke width in pixels.</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </section>
+
+
+    <section id="theme-styles">
+
+        <h2>Theme styles</h2>
+
+        <p><em>TO DO</em></p>
+
+    </section>
+
+
+
+    <section id="examples">
+
+        <h2>Examples</h2>
+
+        <ul>
+            <li><a href="examples/basic-example.html" target="_blank">Basic example (default theme and default config)</a></li>
+            <li><a href="examples/full-demo.html" target="_blank">Full demo (default theme and all extra options enabled)</a></li>
+            <li><a href="examples/full-demo-feed.html" target="_blank">Full demo with initial feed</a></li>
+            <li><a href="examples/full-demo-article.html" target="_blank">Full demo with initial article</a></li>
+            <li><a href="examples/ecm-admin-map-place-marker.html" target="_blank">Admin map place marker example</a></li>
+            <li><a href="examples/ecm-admin-map-draw-route.html" target="_blank">Admin map draw route example</a></li>
+            <li><a href="examples/ecm-admin-map-toggle-mode.html" target="_blank">Admin map toggle mode example</a></li>
+            <li><a href="examples/ecm-admin-map-search-location.html" target="_blank">Admin map search location example</a></li>
+        </ul>
+
+    </section>
+
+
+
+    <section id="contact">
+
+        <h2>Contact info</h2>
+
+        <p>If you have any trouble or questions please email us: support@locationews.com.</p>
+
+    </section>
+
+
+</main>
+
+<footer>
+    &copy; Locationews
+</footer>
+
+</body>
+</html>

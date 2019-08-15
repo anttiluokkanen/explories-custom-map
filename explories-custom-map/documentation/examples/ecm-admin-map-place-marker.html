@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<title>Explories Custom Map - Admin map place marker</title>
+
+<script src="../../vendor/jquery-3.3.1.min.js"></script>
+<script src="../vendor/prism-1.15.0/prism.js"></script>
+
+<script>
+
+$(document).ready(function() {
+
+    $("#getMarkerLocationBtn").click(function() {
+        var location = ECMAdminMap.getMarkerLocation();
+        if (location) {
+            $("#markerLocation").html(location);
+        }
+        else
+        {
+            alert('Place a marker on the map first');
+        }
+    });
+
+});
+
+</script>
+
+<link rel="stylesheet" href="../vendor/prism-1.15.0/prism-one-dark.css" />
+<link rel="stylesheet" href="../css/ecm-documentation.css?v=20190313" />
+<link rel="stylesheet" href="../../css/ecm.css?v=20190313" />
+<link rel="stylesheet" href="../../css/ecm-admin.css?v=20190313" />
+
+</head>
+
+<body class="no-nav">
+
+<header>
+    <img src="../images/explories-landscape-white.svg" alt="Explories" />
+</header>
+
+<main class="container">
+
+    <h1>Explories Custom Map</h1>
+
+    <h2>Admin place marker example</h2>
+
+    <p>This example shows how to place a marker on the map and retrieve it's location with ECMAdminMap.getMarkerLocation() in the admin section.</p>
+
+    <div id="ecm-map" class="ecm-admin-map"></div>
+
+    <p class="text-center">
+        <button type="button" id="getMarkerLocationBtn" class="btn">Get marker location</button>
+    </p>
+
+    <pre><code id="markerLocation" class="language-js">Click on the map to place a marker and click Get marker location button.</code></pre>
+
+    <p>Config options can be set via setConfig method. Here are shown the default values:</p>
+
+<pre><code id="waypoints" class="language-js">ECMAdminMap.setConfig({
+    initLocation: {lat: 64.144319, lng: 26.872043},
+    mapElId: 'ecm-map',
+    mapTypeId: 'roadmap',
+    mapInitZoom: 10,
+    mode: 'marker',
+    route: null
+});</code></pre>
+
+</main>
+
+<script src="../../js/ECMAdminMap.js?v=20190304"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3fO1wMEiJt5KflJ0qlpjYNgcdbJIF63o&libraries=drawing&callback=ECMAdminMap.init"></script>
+
+</body>
+</html>

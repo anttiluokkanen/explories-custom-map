@@ -1,0 +1,3 @@
+[submodule "explories-custom-map"]
+	path = explories-custom-map
+	url = git@bitbucket.org:hphaavikko/explories-custom-map.git

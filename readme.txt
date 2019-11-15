@@ -7,8 +7,8 @@ Requires at least: 5.0
 Tested up to: 5.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 1.0.0
-Version: 1.0.0
+Stable tag: 1.0.1
+Version: 1.0.1
 
 Display markers and routes on Google Map.
 
@@ -49,6 +49,9 @@ Use the shortcode ```[ecm-map]```.
 Use the shortcode ```[ecm-map feed="1"]```.
 
 == Changelog ==
+
+= 1.0.1 (2019-11-15) =
+Updates, updates and updates
 
 = 1.0.0 (2019-08-14) =
 NEW:    Release the plugin for public use.

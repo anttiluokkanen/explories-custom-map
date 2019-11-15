@@ -116,7 +116,6 @@ function register_settings_page() {
     /**
      * Use different theme versions
      */
-    /*
     $cmb_options->add_field( [
         'name'              => __( 'Custom Theme Version', 'ecm' ),
         'desc'              => __( 'Set theme version here.', 'ecm' ),
@@ -124,7 +123,6 @@ function register_settings_page() {
         'type'              => 'text_small',
         'default'           => '1'
     ] );
-    */
 
     /**
      * Route colors

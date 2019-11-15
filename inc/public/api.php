@@ -37,15 +37,9 @@ function register_rest_routes() {
         'callback' => __NAMESPACE__ . '\\get_one',
     ] );
 
-
     register_rest_route( 'ecm/v1', '/get-config(?:/(?P<lan>[a-zA-Z0-9-]+))?', [
         'methods' => 'GET',
         'callback' => __NAMESPACE__ . '\\get_config',
-    ] );
-
-    register_rest_route( 'ecm/v1', '/get-ecm-articles(?:/(?P<lan>[a-zA-Z0-9-]+))?', [
-        'methods' => 'GET',
-        'callback' => __NAMESPACE__ . '\\get_markers_and_routes',
     ] );
 
 }
@@ -188,67 +182,6 @@ function get_markers( \WP_REST_Request $request ) {
     return $markers;
 }
 
-function get_markers_and_routes( \WP_REST_Request $request ) {
-
-    $meta_add['lang'] = [];
-
-    $lan = $request->get_param( 'lan' );
-    if ( ! $lan ) {
-        $lan = substr( get_locale(), 0, 2 );
-    }
-
-    $transient_field = '_ecm_routes_' . $lan;
-
-    if ( function_exists( 'pll_current_language' ) ) {
-        $meta_add['lang'] = $lan;
-        //$meta_add['suppress_filters'] = false;
-    } else {
-        /*
-        global $sitepress;
-        if ( is_object( $sitepress ) ) {
-            $sitepress->switch_lang( $lan );
-        } else {
-        }
-        */
-    }
-
-    $transient_age = YEAR_IN_SECONDS;
-
-    //if ( false === ( $routes = get_transient( $transient_field ) ) ) {
-
-        $routes = [];
-
-        $args = [
-            'post_type' => \ExploriesCustomMap\get_ecm_option('post_types'),
-            'post_status' => 'publish',
-            'posts_per_page' => 1000,
-            'meta_query' => [
-                [
-                    'key' => '_ecm_on',
-                    'value' => '1',
-                    'compare' => '='
-                ]
-            ]
-        ];
-
-        $args = array_merge( $args, $meta_add );
-
-        $posts = get_posts( $args );
-
-        $articles = [];
-
-        foreach ( $posts as $post ) {
-
-            $articles[] = $post;
-
-        }
-
-    //    set_transient( $transient_field, $routes, $transient_age );
-    //}
-
-    return $articles;
-}
-
 function get_one( \WP_REST_Request $request ) {
     $id = $request->get_param( 'id' );
     $ecm = \ExploriesCustomMap\get_ecm_meta( $id );
@@ -308,25 +241,26 @@ function set_route_data( $id = false, $ecm = [] ) {
     if ( $id && is_array( $ecm ) ) {
 
         return [
-            'id'         => absint( $id ),
-            'title'      => ! empty( $ecm['title'] ) ? $ecm['title'] : get_the_title( $id ),
-            'desciption' => apply_filters( 'the_excerpt', get_post_field( 'post_excerpt', $id ) ),
-            'image'      => ! empty( $ecm['img'] ) ? $ecm['img'] : ( get_the_post_thumbnail_url( $id ) ? get_the_post_thumbnail_url( $id, 'medium_large' ) : null ),
-            'url'        => ! empty( $ecm['url'] ) ? $ecm['url'] : get_permalink( $id ),
-            'slug'       => ! empty( $ecm['url'] ) ? null : get_post_field( 'post_name', $id ),
-            'target'     => ! empty( $ecm['target'] ) ? $ecm['target'] : '',
+            'id'            => absint( $id ),
+            'title'         => ! empty( $ecm['title'] ) ? $ecm['title'] : get_the_title( $id ),
+            'desciption'    => apply_filters( 'the_excerpt', get_post_field( 'post_excerpt', $id ) ),
+            'image'         => ! empty( $ecm['img'] ) ? $ecm['img'] : ( get_the_post_thumbnail_url( $id ) ? get_the_post_thumbnail_url( $id, 'medium_large' ) : null ),
+            'url'           => ! empty( $ecm['url'] ) ? $ecm['url'] : get_permalink( $id ),
+            'articleApiUrl' => get_rest_url(null, 'ecm/v1/id/' . absint( $id ) ),
+            'slug'          => ! empty( $ecm['url'] ) ? null : get_post_field( 'post_name', $id ),
+            'target'        => ! empty( $ecm['target'] ) ? $ecm['target'] : '',
             'polylineOptions' => [
                 'strokeColor'   => ! empty( $ecm['color'] ) ? $ecm['color'] : '#cd37c1',
                 'strokeOpacity' => 1,
                 'strokeWeight'  => 5
             ],
-            'tags'       => $ecm['tags'],
-            'badges'     => null,
-            'modes'      => isset( $ecm['layers'][0] ) ? $ecm['layers'][0] : [],
-            'waypoints'  => $ecm['coordinates'],
-            'icon'       => get_term_meta( $ecm['symbol'], 'symbol', true ),
-            'latitude'   => floatval( $ecm['lat'] ),
-            'longitude'  => floatval( $ecm['lng'] )
+            'tags'          => $ecm['tags'],
+            'badges'        => null,
+            'modes'         => isset( $ecm['layers'][0] ) ? $ecm['layers'][0] : [],
+            'waypoints'     => $ecm['coordinates'],
+            'icon'          => get_term_meta( $ecm['symbol'], 'symbol', true ),
+            'latitude'      => floatval( $ecm['lat'] ),
+            'longitude'     => floatval( $ecm['lng'] )
         ];
     }
     return null;
@@ -335,18 +269,19 @@ function set_route_data( $id = false, $ecm = [] ) {
 function set_marker_data( $id = false, $ecm = [] ) {
     if ( $id && is_array( $ecm ) ) {
         return [
-            'id'         => absint( $id ),
-            'title'      => ! empty( $ecm['title'] ) ? $ecm['title'] : get_the_title( $id ),
-            'desciption' => apply_filters( 'the_excerpt', get_post_field( 'post_excerpt', $id ) ),
-            'image'      => ! empty( $ecm['img'] ) ? $ecm['img'] : ( get_the_post_thumbnail_url( $id ) ? get_the_post_thumbnail_url( $id, 'medium_large' ) : null ),
-            'latitude'   => floatval( $ecm['lat'] ),
-            'longitude'  => floatval( $ecm['lng'] ),
-            'url'        => ! empty( $ecm['url'] ) ? $ecm['url'] : get_permalink( $id ),
-            'slug'       => ! empty( $ecm['url'] ) ? null : get_post_field( 'post_name', $id ),
-            'target'     => ! empty( $ecm['target'] ) ? $ecm['target'] : '',
-            'icon'       => get_term_meta( $ecm['symbol'], 'symbol', true ),
-            'modes'      => isset( $ecm['layers'][0] ) ? $ecm['layers'][0] : [],
-            'tags'       => $ecm['tags'],
+            'id'            => absint( $id ),
+            'title'         => ! empty( $ecm['title'] ) ? $ecm['title'] : get_the_title( $id ),
+            'desciption'    => apply_filters( 'the_excerpt', get_post_field( 'post_excerpt', $id ) ),
+            'image'         => ! empty( $ecm['img'] ) ? $ecm['img'] : ( get_the_post_thumbnail_url( $id ) ? get_the_post_thumbnail_url( $id, 'medium_large' ) : null ),
+            'latitude'      => floatval( $ecm['lat'] ),
+            'longitude'     => floatval( $ecm['lng'] ),
+            'url'           => ! empty( $ecm['url'] ) ? $ecm['url'] : get_permalink( $id ),
+            'articleApiUrl' => get_rest_url(null, 'ecm/v1/id/' . absint( $id ) ),
+            'slug'          => ! empty( $ecm['url'] ) ? null : get_post_field( 'post_name', $id ),
+            'target'        => ! empty( $ecm['target'] ) ? $ecm['target'] : '',
+            'icon'          => get_term_meta( $ecm['symbol'], 'symbol', true ),
+            'modes'         => isset( $ecm['layers'][0] ) ? $ecm['layers'][0] : [],
+            'tags'          => $ecm['tags'],
         ];
     }
     return null;

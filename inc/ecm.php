@@ -9,6 +9,7 @@ namespace ExploriesCustomMap;
 
 use ExploriesCustomMap\Settings;
 use ExploriesCustomMap\Metabox;
+use ExploriesCustomMap\Categories;
 use ExploriesCustomMap\CMB2;
 
 /**
@@ -24,6 +25,7 @@ function bootstrap() {
 
 	add_action( 'admin_init', 		 		__NAMESPACE__ . '\\ecm_admin_init' );
 	add_action( 'admin_menu', 		 		__NAMESPACE__ . '\\add_ecm_category_menu' );
+	//add_action( 'admin_init',				__NAMESPACE__ . '\\Categories\maybe_add_categories' );
 
 	add_action( 'rest_api_init', 			__NAMESPACE__ . '\\API\\customize_rest_cors', 15 );
 	add_action( 'rest_api_init', 	 		__NAMESPACE__ . '\\API\\register_rest_routes' );
@@ -94,7 +96,6 @@ function ecm_admin_init() {
 	add_filter( 'cmb2_render_ecm_map', 		__NAMESPACE__ . '\\Metabox\\render_ecm_map', 10, 5 );
 	add_filter( 'cmb2_sanitize_ecm_map', 	__NAMESPACE__ . '\\Metabox\\sanitize_ecm_map', 10, 4 );
 	add_filter( 'cmb2_override_meta_save', 	__NAMESPACE__ . '\\Metabox\\cmb2_override_meta_save_for_field_type', 10, 4 );
-
 }
 
 /**
@@ -104,17 +105,48 @@ function ecm_admin_init() {
  */
 function ecm_rewrite() {
 
-	add_rewrite_tag( '%explories%', '([^&]+)' );
+	$legacy_code = false;
 
-    // Match the front page and pass item value as a query var.
-    $frontpage = get_option('page_on_front');
+	if ( true === $legacy_code ) {
+		// article id / OLD logic
+		add_rewrite_tag( '%explories%', '([^&]+)' );
 
-    if ( $frontpage !== 0 ) {
-    	add_rewrite_rule( '^ecm-view/([^/]*)/?', 'index.php?page_id='.$frontpage.'&explories=$matches[1]', 'top' );
-    }
+		// Match the front page and pass item value as a query var.
+	    $frontpage = get_option('page_on_front');
 
-	add_rewrite_rule( '^(.*)/ecm-view/([^/]*)/?', 'index.php?pagename=$matches[1]&static=true&explories=$matches[2]', 'top' );
+	    if ( $frontpage !== 0 ) {
+	    	add_rewrite_rule( '^ecm-view/([^/]*)/?', 'index.php?page_id='.$frontpage.'&explories=$matches[1]', 'top' );
+	    }
 
+		add_rewrite_rule( '^(.*)/ecm-view/([^/]*)/?', 'index.php?pagename=$matches[1]&static=true&explories=$matches[2]', 'top' );
+
+	} else {
+
+		// article id / OLD logic
+		add_rewrite_tag( '%explories%', '([^&]+)' );
+
+		// site name slug
+		add_rewrite_tag( '%explories_site_slug%', '([^&]+)' );
+		// article id
+		add_rewrite_tag( '%explories_article_id%', '([^&]+)' );
+		// article slug
+		add_rewrite_tag( '%explories_article_slug%', '([^&]+)' );
+
+	    // Match the front page and pass item value as a query var.
+	    $frontpage = get_option('page_on_front');
+
+	    $map_page = get_option('ecm_options');
+	    $map_page = ! empty( $map_page['page_slug'] ) ? $map_page['page_slug'] : 'kartta';
+
+	    if ( $frontpage !== 0 ) {
+	    	add_rewrite_rule( '^ecm-view/([^/]*)/?', 'index.php?page_id='.$frontpage.'&explories=$matches[1]', 'top' );
+	    }
+
+		add_rewrite_rule( '^(.*)/ecm-view/([^/]*)/?', 'index.php?pagename=$matches[1]&static=true&explories=$matches[2]', 'top' );
+
+		// site-url/map-page-slug/site-name-slug/article-id/article-title/
+		add_rewrite_rule( "^(.*)/{$map_page}/([^/]*)/([^/]*)/([^/]*)?", 'index.php?pagename=$matches[1]&static=true&explories_site_slug=$matches[2]&explories_article_id=$matches[3]&explories_article_slug=$matches[4]', 'top' );
+	}
 }
 
 /**
@@ -142,7 +174,7 @@ function disable_canonical_redirect_for_front_page( $redirect ) {
  */
 function register_styles() {
 	if ( ! is_admin() ) {
-		wp_enqueue_style( 'ecmStyle', EXPLORIES_ECM_BASE . 'explories-custom-map/css/ecm.min.css', null, EXPLORIES_ECM_VERSION );
+		wp_enqueue_style( 'ecmStyle', EXPLORIES_ECM_BASE . 'explories-custom-map/css/ecm.min.css', null, filemtime( EXPLORIES_ECM_PATH . 'explories-custom-map/css/ecm.min.css' ) );
 	}
 }
 
@@ -152,7 +184,7 @@ function register_styles() {
  * @return [type] [description]
  */
 function register_admin_styles() {
-	wp_enqueue_style( 'ecmAdminStyle', EXPLORIES_ECM_BASE . 'explories-custom-map/css/ecm-admin.min.css', [], EXPLORIES_ECM_VERSION );
+	wp_enqueue_style( 'ecmAdminStyle', EXPLORIES_ECM_BASE . 'explories-custom-map/css/ecm-admin.min.css', [], filemtime( EXPLORIES_ECM_PATH . 'explories-custom-map/css/ecm-admin.min.css' ) );
 }
 
 /**
@@ -167,7 +199,7 @@ function load_admin_scripts() {
 	}
 
 	// ECM Admin Map
-	wp_enqueue_script( 'ecmAdminScript', EXPLORIES_ECM_BASE . 'explories-custom-map/js/ECMAdminMap.min.js', [ 'jquery' ], EXPLORIES_ECM_VERSION, true );
+	wp_enqueue_script( 'ecmAdminScript', EXPLORIES_ECM_BASE . 'explories-custom-map/js/ECMAdminMap.min.js', [ 'jquery' ], filemtime( EXPLORIES_ECM_PATH . 'explories-custom-map/js/ECMAdminMap.min.js' ), true );
 
 	$google_api_key = get_ecm_option('google_maps_api_key');
 
@@ -183,10 +215,10 @@ function load_admin_scripts() {
 	}
 
 	// ddSlick
-	wp_enqueue_script( 'ddSlick', EXPLORIES_ECM_BASE . 'assets/js/jquery.ddslick.min.js', [ 'jquery' ], EXPLORIES_ECM_VERSION );
+	wp_enqueue_script( 'ddSlick', EXPLORIES_ECM_BASE . 'assets/js/jquery.ddslick.min.js', [ 'jquery' ], filemtime( EXPLORIES_ECM_PATH . 'assets/js/jquery.ddslick.min.js' ) );
 
 	// Metabox JS
-	wp_enqueue_script( 'ecmMetabox', EXPLORIES_ECM_BASE . 'assets/js/metabox.min.js', [ 'ecmAdminScript', 'ecmGoogleMaps', 'jquery', 'ddSlick' ], EXPLORIES_ECM_VERSION, true );
+	wp_enqueue_script( 'ecmMetabox', EXPLORIES_ECM_BASE . 'assets/js/metabox.min.js', [ 'ecmAdminScript', 'ecmGoogleMaps', 'jquery', 'ddSlick' ], filemtime( EXPLORIES_ECM_PATH . 'assets/js/metabox.min.js' ), true );
 
 	// Get metabox data for post
 	$ecm = get_ecm_meta( get_the_ID() );
@@ -282,6 +314,10 @@ function add_query_vars_filter( $vars ) {
     $vars[] = 'ecmid';
     $vars[] = 'explories';
 
+    $vars[] = 'explories_site_slug';
+    $vars[] = 'explories_article_id';
+    $vars[] = 'explories_article_slug';
+
     return $vars;
 }
 
@@ -339,10 +375,10 @@ function generate_ecm_map( $atts ) {
 	$lan = substr( get_locale(), 0, 2 );
 
 	// Frontend ECM js
-	wp_enqueue_script( 'ecmScript', EXPLORIES_ECM_BASE . 'explories-custom-map/js/ECM.min.js', [ 'jquery' ], EXPLORIES_ECM_VERSION, true );
+	wp_enqueue_script( 'ecmScript', EXPLORIES_ECM_BASE . 'explories-custom-map/js/ECM.min.js', [ 'jquery' ], filemtime( EXPLORIES_ECM_PATH . 'explories-custom-map/js/ECM.min.js' ), true );
 
 	// Frontend plugin js
-	wp_enqueue_script( 'ecmFront', EXPLORIES_ECM_BASE . 'assets/js/front.min.js', [ 'ecmScript' ], EXPLORIES_ECM_VERSION, true );
+	wp_enqueue_script( 'ecmFront', EXPLORIES_ECM_BASE . 'assets/js/front.min.js', [ 'ecmScript' ], filemtime( EXPLORIES_ECM_PATH . 'assets/js/front.min.js' ), true );
 
 	$front = [
 		'usePlugin' 	=> true,
@@ -399,11 +435,19 @@ function generate_ecm_map( $atts ) {
 
   	$explories_id = get_query_var('explories');
   	if ( $explories_id ) {
-  		$attr .= ' data-article="' . $explories_id . '"';
+  		if ( isset($meta) && $meta['target'] != '_blank' ) {
+  			$attr .= ' data-article-api-url="' . get_rest_url( null, '/ecm/v1/id/' . $explories_id ) . '"';
+  		} else {
+  			$attr .= ' data-article="' . $explories_id . '"';
+  		}
   	} else {
   		$explories_id = isset( $_GET['ch_explories'] ) ? $_GET['ch_explories'] : false;
   		if ( $explories_id ) {
-  			$attr .= ' data-article="' . $explories_id . '"';
+  			if ( isset($meta) && $meta['target'] != '_blank' ) {
+  				$attr .= ' data-article-api-url="' . get_rest_url( null, '/ecm/v1/id/' . $explories_id ) . '"';
+  			} else {
+	  			$attr .= ' data-article="' . $explories_id . '"';
+  			}
   		}
   	}
 
@@ -419,7 +463,6 @@ function generate_ecm_map( $atts ) {
 function unregister_google_maps( $handle = '' ) {
 
 	global $wp_scripts;
-
 	foreach ( $wp_scripts->registered as $script ) {
 
 		if ( strpos( $script->src, $handle ) !== false ) {
@@ -573,7 +616,14 @@ function get_ecm_symbols( $symbol_id = false ) {
  * @return array
  */
 function get_available_themes() {
-	return ['default' => 'default'];
+	$themes = [];
+	$dirs = array_filter( glob( EXPLORIES_ECM_PATH . 'explories-custom-map/themes/*'), 'is_dir' );
+	foreach ( $dirs as $dir ) {
+		$dirarr = explode('/', $dir );
+		$theme = end( $dirarr );
+		$themes[ $theme ] = $theme;
+	}
+	return $themes;
 }
 
 /**

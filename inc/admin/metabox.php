@@ -238,6 +238,7 @@ function ecm_meta() {
  * @param  CMB2_Field $field
  * @return array An array of options that matches the CMB2 options array
  */
+/*
 function cmb2_get_term_options( $field ) {
 	$args = $field->args( 'get_terms_args' );
 	$args = is_array( $args ) ? $args : [];
@@ -260,6 +261,8 @@ function cmb2_get_term_options( $field ) {
 
 	return $term_options;
 }
+*/
+
 /**
  * Render field.
  */

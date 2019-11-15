@@ -57,6 +57,7 @@ function explore(){
     require_once __DIR__ . '/inc/public/api.php';
 	require_once __DIR__ . '/inc/admin/settings.php';
 	require_once __DIR__ . '/inc/admin/metabox.php';
+    //require_once __DIR__ . '/inc/admin/categories.php';
 
 	add_action( 'plugins_loaded', __NAMESPACE__ . '\\bootstrap' );
 }

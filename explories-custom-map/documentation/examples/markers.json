@@ -1,0 +1,110 @@
+[
+    {
+        "id": 1,
+        "title": "Täällä, tässä paikassa kaikki on hyvin: Kirvessaaren kesäyö",
+        "image": "documentation/examples/images/1542633434_kirvessaari2.jpg",
+        "latitude": 62.294862,
+        "longitude": 27.132753,
+        "url": "https://explori.es/fi/Article/9028/taalla-tassa-paikassa-kaikki-on-hyvin-kirvessaaren-kesayo",
+        "target": "_blank",
+        "icon": "restaurant.png",
+        "tags": [
+            {
+                "id": 1,
+                "name": "Ravintola",
+                "icon": "restaurant.png"
+            },
+            {
+                "id": 2,
+                "name": "Nähtävyys",
+                "icon": "sight.png"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "title": "Salpalinjaa entisöitiin Kuusamon Lahtelassa: tältä paikka näytti syksyllä 1944",
+        "image": "documentation/examples/images/1542634574_salpakuusamo5.jpg",
+        "latitude": 62.294862,
+        "longitude": 27.152753,
+        "url": "https://explori.es/fi/Article/9019/salpalinjaa-entisoitiin-kuusamon-lahtelassa-talta-paikka-naytti-syksylla-1944",
+        "target": "_blank",
+        "icon": "swimming.png",
+        "tags": [
+            {
+                "id": 3,
+                "name": "Uimaranta",
+                "icon": "swimming.png"
+            },
+            {
+                "id": 1,
+                "name": "Ravintola",
+                "icon": "restaurant.png"
+            },
+            {
+                "id": 2,
+                "name": "Nähtävyys",
+                "icon": "sight.png"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "title": "Riisitunturi, talviretkeilijän paratiisi",
+        "image": "documentation/examples/images/1542639014_riisitunturi-2.jpg",
+        "latitude": 62.319655,
+        "longitude": 27.420691,
+        "url": "https://explori.es/fi/Article/8629/riisitunturi-talviretkeilijan-paratiisi",
+        "articleApiUrl": "https://explori.es/api/news/8629",
+        "slug": "jee-jee-jee",
+        "target": "_blank",
+        "icon": "swimming.png",
+        "modes": ["summer"],
+        "tags": [
+            {
+                "id": 3,
+                "name": "Uimaranta",
+                "icon": "swimming.png"
+            },
+            {
+                "id": 2,
+                "name": "Nähtävyys",
+                "icon": "sight.png"
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "title": "Vanhat tammet ja sammalten hehku kuin satukirjasta – joulukuinen retki Salon Vaisakkoon",
+        "image": "documentation/examples/images/1546253117_vaisakko15.jpg",
+        "latitude": 62.324859,
+        "longitude": 27.894981,
+        "url": "https://explori.es/fi/Article/9311/vanhat-tammet-ja-sammalten-hehku-kuin-satukirjasta-8211-joulukuinen-retki-salon-vaisakkoon",
+        "target": "_blank",
+        "icon": "sight.png",
+        "tags": [
+            {
+                "id": 2,
+                "name": "Nähtävyys",
+                "icon": "sight.png"
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "title": "Sinivalkoisia maisemia niin kauas kuin katse kantaa: tällainen on Levitunturin huippupolku",
+        "image": "documentation/examples/images/1544004630_levi6.jpg",
+        "latitude": 62.448577,
+        "longitude": 27.669870,
+        "url": "https://explori.es/fi/Article/9280/sinivalkoisia-maisemia-niin-kauas-kuin-katse-kantaa-tallainen-on-levitunturin-huippupolku",
+        "target": "_blank",
+        "icon": "fishing.png",
+        "tags": [
+            {
+                "id": 4,
+                "name": "Kalastus",
+                "icon": "fishing.png"
+            }
+        ]
+    }
+]

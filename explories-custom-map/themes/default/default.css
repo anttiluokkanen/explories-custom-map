@@ -1,0 +1,9 @@
+#ecm {
+    /*background-color: #000;*/
+}
+
+/* Google Maps imageMapType toning */
+#ecm img[src*="https://mapapi.explories.net/nls-basic-print-color-1-10000/"] {
+    -webkit-filter: sepia(20%) hue-rotate(20deg) grayscale(40%) contrast(105%);
+    filter: sepia(20%) hue-rotate(20deg) grayscale(40%) contrast(105%);
+}

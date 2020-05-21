@@ -243,7 +243,7 @@ function set_route_data( $id = false, $ecm = [] ) {
         return [
             'id'            => absint( $id ),
             'title'         => ! empty( $ecm['title'] ) ? $ecm['title'] : get_the_title( $id ),
-            'desciption'    => apply_filters( 'the_excerpt', get_post_field( 'post_excerpt', $id ) ),
+            'description'   => apply_filters( 'the_excerpt', get_post_field( 'post_excerpt', $id ) ),
             'image'         => ! empty( $ecm['img'] ) ? $ecm['img'] : ( get_the_post_thumbnail_url( $id ) ? get_the_post_thumbnail_url( $id, 'medium_large' ) : null ),
             'url'           => ! empty( $ecm['url'] ) ? $ecm['url'] : get_permalink( $id ),
             'articleApiUrl' => get_rest_url(null, 'ecm/v1/id/' . absint( $id ) ),
@@ -271,11 +271,11 @@ function set_marker_data( $id = false, $ecm = [] ) {
         return [
             'id'            => absint( $id ),
             'title'         => ! empty( $ecm['title'] ) ? $ecm['title'] : get_the_title( $id ),
-            'desciption'    => apply_filters( 'the_excerpt', get_post_field( 'post_excerpt', $id ) ),
+            'description'   => apply_filters( 'the_excerpt', get_post_field( 'post_excerpt', $id ) ),
             'image'         => ! empty( $ecm['img'] ) ? $ecm['img'] : ( get_the_post_thumbnail_url( $id ) ? get_the_post_thumbnail_url( $id, 'medium_large' ) : null ),
             'latitude'      => floatval( $ecm['lat'] ),
             'longitude'     => floatval( $ecm['lng'] ),
-            'url'           => ! empty( $ecm['url'] ) ? $ecm['url'] : get_permalink( $id ),
+            'url'           => ! empty  ( $ecm['url'] ) ? $ecm['url'] : get_permalink( $id ),
             'articleApiUrl' => get_rest_url(null, 'ecm/v1/id/' . absint( $id ) ),
             'slug'          => ! empty( $ecm['url'] ) ? null : get_post_field( 'post_name', $id ),
             'target'        => ! empty( $ecm['target'] ) ? $ecm['target'] : '',

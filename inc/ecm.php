@@ -35,6 +35,11 @@ function bootstrap() {
 
 	add_action( 'cmb2_admin_init', 	 		__NAMESPACE__ . '\\Settings\\register_settings_page' );
 
+	//add_action( 'template_redirect', __NAMESPACE__ . '\\maybe_remove_googlemaps', 100 );
+	//add_action( 'wp_head', __NAMESPACE__ . '\\maybe_remove_googlemaps' );
+	//add_action( 'wp_footer', __NAMESPACE__ . '\\maybe_remove_googlemaps' );
+	add_action('wp_enqueue_scripts', __NAMESPACE__ . '\\maybe_remove_googlemaps',999);
+
 	add_filter( 'script_loader_tag', 		__NAMESPACE__ . '\\add_id_to_script', 10, 3 );
 	add_filter( 'upload_mimes', 	 		__NAMESPACE__ . '\\add_custom_mime_types' );
 	add_filter( 'query_vars', 		 		__NAMESPACE__ . '\\add_query_vars_filter' );
@@ -463,10 +468,12 @@ function generate_ecm_map( $atts ) {
 function unregister_google_maps( $handle = '' ) {
 
 	global $wp_scripts;
+
 	foreach ( $wp_scripts->registered as $script ) {
 
 		if ( strpos( $script->src, $handle ) !== false ) {
 			wp_deregister_script( $script->handle );
+			wp_dequeue_script( $script->handle );
 		}
 	}
 
@@ -794,4 +801,33 @@ function add_ecm_category_menu() {
 		'edit-tags.php?taxonomy=ecm_category',
 		false
 	);
+}
+
+function maybe_remove_googlemaps() {
+
+	global $post;
+
+	$ecm_options = get_option('ecm_options');
+	$map_page = ! empty( $ecm_options['page_slug'] ) ? $ecm_options['page_slug'] : '';
+
+	if ( $map_page != '' ) {
+
+		$map_page = trim(str_replace('/', '', $map_page ) );
+		if ( $map_page == $post->post_name ) {
+			$google_api_key = $ecm_options['google_maps_api_key'];
+
+			if ( $google_api_key ) {
+
+				// Google Map Api
+				// Unregister if another plugin has loaded Google library
+				unregister_google_maps('maps.googleapis');
+
+				wp_register_script( 'ecmGoogleMapsFront', 'https://maps.googleapis.com/maps/api/js?key=' . $google_api_key . '&callback=ECM.init', [ 'ecmScript' ], null, true );
+
+				wp_enqueue_script( 'ecmGoogleMapsFront' );
+			}
+		}
+
+	}
+
 }

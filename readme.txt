@@ -50,8 +50,8 @@ Use the shortcode ```[ecm-map feed="1"]```.
 
 == Changelog ==
 
-= 1.0.1 (2019-11-15) =
-Updates, updates and updates
+= 1.1.0 (2020-03-03) =
+* CHANGED:  Check registered Google Maps script in template_redirect hook instead of in shortcode.
 
 = 1.0.0 (2019-08-14) =
 NEW:    Release the plugin for public use.

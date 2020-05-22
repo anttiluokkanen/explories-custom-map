@@ -4,11 +4,11 @@ Plugin Name: Explories Custom Map
 Plugin URI: https://www.matkailukartta.fi
 Tags: location, travel, explore, map, routes, nature
 Requires at least: 5.0
-Tested up to: 5.2.2
+Tested up to: 5.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 1.0.1
-Version: 1.0.1
+Stable tag: 1.1.1
+Version: 1.1.1
 
 Display markers and routes on Google Map.
 
@@ -49,6 +49,9 @@ Use the shortcode ```[ecm-map]```.
 Use the shortcode ```[ecm-map feed="1"]```.
 
 == Changelog ==
+
+= 1.1.1 (2020-05-21) =
+* Include `explories-custom-map` application.
 
 = 1.1.0 (2020-03-03) =
 * CHANGED:  Check registered Google Maps script in template_redirect hook instead of in shortcode.

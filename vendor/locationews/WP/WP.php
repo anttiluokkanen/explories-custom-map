@@ -1,4 +1,5 @@
 <?php
+
 namespace Locationews;
 
 class WP
@@ -10,9 +11,8 @@ class WP
      * @param  string $string [description]
      * @return [type]         [description]
      */
-    public static function debug( $string = '' )
+    public static function debug($string = '')
     {
-        return [ 'Locationews\WP' => $string ];
+        return ['Locationews\WP' => $string];
     }
-
 }

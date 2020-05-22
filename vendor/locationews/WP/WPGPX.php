@@ -1,5 +1,7 @@
 <?php
+
 namespace Locationews;
+
 use Locationews\GPX;
 
 class WPGPX
@@ -11,9 +13,9 @@ class WPGPX
      * @param  string $string [description]
      * @return [type]         [description]
      */
-    public static function debug( $string = '' )
+    public static function debug($string = '')
     {
-        return [ 'Locationews\WPGPX' => $string ];
+        return ['Locationews\WPGPX' => $string];
     }
 
     /**
@@ -23,30 +25,26 @@ class WPGPX
      * @param  [type] $url [description]
      * @return [type]        [description]
      */
-    public static function readGPX( $url )
+    public static function readGPX($url)
     {
-        $response = wp_remote_get( $url );
+        $response = wp_remote_get($url);
 
-        if ( ! isset( $response['response']['code'] ) || $response['response']['code'] !== 200 )
-        {
+        if (!isset($response['response']['code']) || $response['response']['code'] !== 200) {
             return false;
         }
 
-        $gpx = wp_remote_retrieve_body( $response );
+        $gpx = wp_remote_retrieve_body($response);
 
-        if ( $gpx )
-        {
-            $attachment_id = attachment_url_to_postid( $url );
+        if ($gpx) {
+            $attachment_id = attachment_url_to_postid($url);
 
-            if ( $attachment_id )
-            {
-                wp_delete_attachment( $attachment_id, false );
+            if ($attachment_id) {
+                wp_delete_attachment($attachment_id, false);
             }
 
-            return \Locationews\GPX::parseGpxToEcmRouteWaypoints( $gpx );
+            return \Locationews\GPX::parseGpxToEcmRouteWaypoints($gpx);
         }
 
         return false;
     }
-
 }

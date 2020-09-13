@@ -28,7 +28,7 @@ function bootstrap()
 	add_action('admin_menu', __NAMESPACE__ . '\\add_ecm_category_menu');
 	add_action('rest_api_init', __NAMESPACE__ . '\\API\\customize_rest_cors', 15);
 	add_action('rest_api_init',	__NAMESPACE__ . '\\API\\register_rest_routes');
-	add_action('save_post', __NAMESPACE__ . '\\API\\clear_ecm_transients');
+	add_action('save_post', __NAMESPACE__ . '\\API\\clear_ecm_transients', 11, 1);
 	add_action('cmb2_init', __NAMESPACE__ . '\\Metabox\\ecm_meta');
 	add_action('cmb2_admin_init', __NAMESPACE__ . '\\Settings\\register_settings_page');
 	add_action('wp_enqueue_scripts', __NAMESPACE__ . '\\maybe_remove_googlemaps', 999);
@@ -739,7 +739,7 @@ function register_ecm_categories()
 
 	register_taxonomy(
 		'ecm_category',
-		get_post_types(),
+		'ecm',
 		$args
 	);
 }

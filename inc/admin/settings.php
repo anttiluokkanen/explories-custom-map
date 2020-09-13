@@ -169,7 +169,7 @@ function register_settings_page()
         'description' => __('Caches routes and markers. Shortens load time if there is a lot of content to display.', 'ecm'),
         'id' => 'use_map_cache',
         'type' => 'checkbox',
-        'default' => false,
+        'default' => 'on',
     ]);
 
     /**

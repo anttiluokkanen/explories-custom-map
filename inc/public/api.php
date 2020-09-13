@@ -51,7 +51,7 @@ function get_routes(\WP_REST_Request $request)
         $meta_add['lang'] = $lan;
     }
 
-    $transient_age = 10 * MINUTE_IN_SECONDS;
+    $transient_age = 1 * DAY_IN_SECONDS;
 
     $routes = get_transient($transient_field);
     $useCache = get_ecm_option('use_map_cache');
@@ -114,7 +114,7 @@ function get_markers(\WP_REST_Request $request)
         $meta_add['lang'] = $lan;
     }
 
-    $transient_age = 10 * MINUTE_IN_SECONDS;
+    $transient_age = 1 * DAY_IN_SECONDS;
 
     $markers = get_transient($transient_field);
     $useCache = get_ecm_option('use_map_cache');
@@ -280,9 +280,11 @@ function clear_ecm_transients($id)
         $lan = substr(get_locale(), 0, 2);
     }
 
-    // TODO: Maybe no need to delete both transients each time, but get_post_meta wasn't returning proper values so this is a quick fix
-    delete_transient('_ecm_markers_' . $lan);
-    delete_transient('_ecm_routes_' . $lan);
+    if (get_post_meta($id, '_ecm_mode', true) == 'marker') {
+        delete_transient('_ecm_markers_' . $lan);
+    } elseif (get_post_meta($id, '_ecm_mode', true) == 'route') {
+        delete_transient('_ecm_routes_' . $lan);
+    }
 
     return $id;
 }

@@ -165,11 +165,11 @@ function register_settings_page()
      * Use map cache
      */
     $cmb_options->add_field([
-        'name' => __('Use Map Cache', 'ecm'),
-        'description' => __('Caches routes and markers. Shortens load time if there is a lot of content to display.', 'ecm'),
-        'id' => 'use_map_cache',
+        'name' => __('Disable Map Cache', 'ecm'),
+        'description' => __('Disables caching for routes and markers. Cache shortens load time if there is a lot of content to display.', 'ecm'),
+        'id' => 'disable_map_cache',
         'type' => 'checkbox',
-        'default' => 'on',
+        'default' => false,
     ]);
 
     /**

@@ -54,8 +54,8 @@ function get_routes(\WP_REST_Request $request)
     $transient_age = 1 * DAY_IN_SECONDS;
 
     $routes = get_transient($transient_field);
-    $useCache = get_ecm_option('use_map_cache');
-    $shouldGetFreshData = ($routes === false || $useCache !== 'on');
+    $disableCache = get_ecm_option('disable_map_cache');
+    $shouldGetFreshData = ($routes === false || $disableCache === 'on');
 
     if ($shouldGetFreshData) {
 
@@ -117,8 +117,8 @@ function get_markers(\WP_REST_Request $request)
     $transient_age = 1 * DAY_IN_SECONDS;
 
     $markers = get_transient($transient_field);
-    $useCache = get_ecm_option('use_map_cache');
-    $shouldGetFreshData = ($markers === false || $useCache !== 'on');
+    $disableCache = get_ecm_option('disable_map_cache');
+    $shouldGetFreshData = ($markers === false || $disableCache === 'on');
 
     if ($shouldGetFreshData) {
 

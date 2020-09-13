@@ -1381,6 +1381,9 @@ var ECM = (function($)
             articleApiUrl = apiUrl;
         }
 
+        // Clear existing article just in case
+        $(".ecm-article-container").remove();
+
         var $articleContainer = $('\
         <div class="ecm-article-container">\
             <div class="ecm-article">\

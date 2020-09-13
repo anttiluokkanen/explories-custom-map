@@ -30,6 +30,9 @@
                 "name": "Intermediate"
             }
         ],
+        "icon":	"themes/default/images/markers/restaurant.png",
+        "latitude": 62.28600883,
+        "longitude": 27.24468783,
         "waypoints": [
             {
             	"lat": 62.28600883,

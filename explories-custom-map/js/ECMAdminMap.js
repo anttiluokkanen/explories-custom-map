@@ -166,9 +166,6 @@ var ECMAdminMap = (function($)
         if (marker)
         {
             marker.setPosition(location);
-            // Set current coordinates to hidden input
-            $("#_ecm_coordinates").val(getMarkerLocation());
-            $("#_ecm_map_placeholder code").text(getMarkerLocation());
         }
         else
         {
@@ -178,6 +175,10 @@ var ECMAdminMap = (function($)
                 draggable:true
             });
         }
+
+        // Set current coordinates to hidden input
+        $("#_ecm_coordinates").val(getMarkerLocation());
+        $("#_ecm_map_placeholder code").text(getMarkerLocation());
 
         google.maps.event.addListener(marker, 'drag', function( event ) {
             $("#_ecm_coordinates").val(getMarkerLocation());

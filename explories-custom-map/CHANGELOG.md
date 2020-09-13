@@ -6,6 +6,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.5] - 2020-09-11
+### Fixed
+- Duplicate article content.
+- Fixed ECMAdminMap for WP.
+
 ## [1.3.4] - 2020-01-08
 ### Changed
 - Follow user set to false by default.

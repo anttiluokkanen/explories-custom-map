@@ -11,7 +11,7 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: ecm
  * Domain Path: /languages/
- * Version: 1.1.2
+ * Version: 1.1.3
  *
  * @package ExploriesCustomMap
  */
@@ -22,7 +22,7 @@ namespace ExploriesCustomMap;
  * Plugin version
  */
 if (!defined('EXPLORIES_ECM_VERSION')) {
-    define('EXPLORIES_ECM_VERSION', '1.1.2');
+    define('EXPLORIES_ECM_VERSION', '1.1.3');
 }
 
 /**

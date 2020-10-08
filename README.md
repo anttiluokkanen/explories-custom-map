@@ -54,6 +54,7 @@ Allows showing a different image on the map. Uses the article's image if left em
 ##### URL
 Allows using a different URL on the map. Uses the article's URL if left empty.
 
+##### NOTE: If you're using the Polylang plugin, you need to add ECM categories and Map Articles to localizations
 
 ## Frequently Asked Questions
 
@@ -66,6 +67,8 @@ Use the shortcode ```[ecm-map]```.
 Use the shortcode ```[ecm-map feed="1"]```.
 
 ## Changelog
+### 1.1.3 (2020-10-08)
+- Updated `explories-custom-map` application.
 ### 1.1.2 (2020-09-13)
 - Changes to publishing and caching to make the plugin more reliable.
 - Updated `explories-custom-map` application.

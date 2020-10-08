@@ -2,7 +2,7 @@
  * ECM.js
  * @copyright   2018 Fakiirimedia Oy
  * @author      Hape Haavikko <hape.haavikko@fakiirimedia.com>
- * @version     1.3.4
+ * @version     1.3.6
  */
 var ECM = (function($)
 {
@@ -1022,7 +1022,7 @@ var ECM = (function($)
                 continue;
             }
 
-            if (filters !== null && ! matchesFilters(markersJSON[i]))
+            if ((filters === null) || filters !== null && ! matchesFilters(markersJSON[i]))
             {
                 continue;
             }
@@ -2352,16 +2352,16 @@ var ECM = (function($)
             $card.addClass("ecm-card-external");
 
             // Show external icon only if article is not opened in overlay
-            if (! obj.articleApiUrl)
+            if (! obj.articleApiUrl && notEmpty(obj.url))
             {
                 $card.append('<div class="ecm-card-external-icon"></div>');
             }
 
-            if (notEmpty(obj.logo))
+            if (obj.logo)
             {
                 var $logo = $('<div class="ecm-card-logo" style="background-image:url(\'' + obj.logo + '\');"></div>');
 
-                if (notEmpty(obj.color))
+                if (obj.color)
                 {
                     $logo.css("background-color", obj.color);
                 }
@@ -2617,7 +2617,7 @@ var ECM = (function($)
         $("#ecm").append($settingsBtn);
 
         // Create settings panel
-        var $settingsPanel = $('<div id="ecmSettings" class="ecm-panel ecm-panel-settings"></div>');
+        var $settingsPanel = $('<div id="ecmSettings" class="ecm-panel ecm-panel-settings notranslate"></div>');
 
         // Create close settings button
         var $closeSettingsBtn = ecmUIButton({
@@ -3209,6 +3209,141 @@ var ECM = (function($)
     };
 
     /**
+     * Converts Locations DB places and routes data to ECM markers and routes.
+     */
+    var convertLocationsDB2ECM = function(data, name)
+    {
+        var marker;
+        var route;
+        var icon = config.externalMarkers[name].filtersIcon;
+        var target;
+        var external;
+
+        externalMarkersJSON[name] = [];
+        externalRoutesJSON[name] = [];
+        clearExternalRoutes(name);
+        mapExternalPolylines[name] = [];
+        mapExternalPolylineBorders[name] = [];
+
+        // Places
+        for (var i = 0; i < data.places.length; i++)
+        {
+            //var url = 'https://explori.es/fi/Article/' + data[i].id + '/' + data[i].slug;
+            target = '_blank';
+            external = true;
+
+            // Set article view url if defined
+            /*if (config.externalMarkers[name].articleViewUrl)
+            {
+                url = config.externalMarkers[name].articleViewUrl;
+                url = url.replace('{id}', data[i].id);
+                url = url.replace('{slug}', data[i].slug);
+                target = '_self';
+                external = false;
+            }*/
+
+            // External can be overrided with external markers property external
+            if (typeof config.externalMarkers[name].external !== 'undefined')
+            {
+                external = config.externalMarkers[name].external;
+            }
+
+            // Use first category icon by default
+            /*if (data.places[i].categories[0] && data.places[i].categories[0].icon) 
+            {
+                icon = data.places[i].categories[0].icon;
+            }
+            else */
+            if (data.places[i].source.icon) 
+            {
+                // No category icon, use source icon
+                icon = data.places[i].source.icon;
+            }
+
+            marker = {
+                id: data.places[i].id,
+                name: name,
+                title: data.places[i].title,
+                slug: data.places[i].slug,
+                image: data.places[i].image,
+                latitude: parseFloat(data.places[i].latitude),
+                longitude: parseFloat(data.places[i].longitude),
+                url: data.places[i].url,
+                target: target,
+                icon: icon,
+                external: external
+            };
+
+            // Set article api url using history
+            /*if (config.routing && config.externalMarkers[name].slug && config.externalMarkers[name].articleApiUrl)
+            {
+                marker.articleApiUrl = config.externalMarkers[name].articleApiUrl;
+                marker.articleApiUrl = marker.articleApiUrl.replace('{id}', data[i].id);
+            }*/
+
+            externalMarkersJSON[name].push(marker);
+        }
+
+        // Routes
+        for (var i = 0; i < data.routes.length; i++)
+        {
+            target = '_blank';
+            external = true;
+
+            // External can be overrided with external markers property external
+            if (typeof config.externalMarkers[name].external !== 'undefined')
+            {
+                external = config.externalMarkers[name].external;
+            }
+
+            // Use first category icon by default
+            /*if (data.routes[i].categories[0] && data.routes[i].categories[0].icon) 
+            {
+                icon = data.routes[i].categories[0].icon;
+            }
+            else */
+            if (data.routes[i].source.icon) 
+            {
+                // No category icon, use source icon
+                icon = data.routes[i].source.icon;
+            }
+
+            marker = {
+                id: data.routes[i].id,
+                name: name,
+                title: data.routes[i].title,
+                slug: data.routes[i].slug,
+                image: data.routes[i].image,
+                latitude: parseFloat(data.routes[i].waypoints[0].lat),
+                longitude: parseFloat(data.routes[i].waypoints[0].lng),
+                url: data.routes[i].url,
+                target: target,
+                icon: icon,
+                external: external
+            };
+
+            route = {
+                id: data.routes[i].id,
+                title: data.routes[i].title,
+                image: data.routes[i].image,
+                polylineOptions: {
+                    "strokeColor": "#0099ff",
+                    "strokeOpacity": 1,
+                    "strokeWeight": 5
+                },
+                waypoints: data.routes[i].waypoints
+            };
+
+            externalRoutesJSON[name].push(route);
+            renderExternalPolylines(name, externalRoutesJSON[name].length-1);
+
+            externalMarkersJSON[name].push(marker);
+        }
+
+        setExternalMarkers(name);
+    };
+
+    /**
      * Converts Retkipaikka api data to ECM markers.
      */
     var convertRetkipaikka2ECM = function(data, name)
@@ -3762,6 +3897,7 @@ var ECM = (function($)
         setConfig: setConfig,
         setTexts: setTexts,
         convertLN2ECM: convertLN2ECM,
+        convertLocationsDB2ECM: convertLocationsDB2ECM,
         convertRetkipaikka2ECM: convertRetkipaikka2ECM
     };
 

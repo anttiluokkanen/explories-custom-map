@@ -6,6 +6,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.6] - 2020-10-06
+### Added
+- Conversion function convertLocationsDB2ECM.
+- Class "notranslate" to div#ecmSettings.
+- Filters null check to setMarkers.
+
+### Fixed
+- Fixed ECMAdminMap to update metadata when marker is created
+
 ## [1.3.5] - 2020-09-11
 ### Fixed
 - Duplicate article content.

@@ -2,7 +2,7 @@
  * ECM.js
  * @copyright   2018 Fakiirimedia Oy
  * @author      Hape Haavikko <hape.haavikko@fakiirimedia.com>
- * @version     1.3.6
+ * @version     1.3.7
  */
 var ECM = (function($)
 {
@@ -2379,6 +2379,12 @@ var ECM = (function($)
                 $card.attr("target", obj.target);
             }
         }
+        else if (obj.articleApiUrl)
+        {
+            // Add any href to make make the text underscored to create consistent UX between clickable infowindows
+            // This href won't be used anyway because a click will use articleApiUrl if it's available
+            $card.attr("href", "#");
+        }
         else
         {
             $card.addClass("ecm-card-no-link");
@@ -3216,6 +3222,7 @@ var ECM = (function($)
         var marker;
         var route;
         var icon = config.externalMarkers[name].filtersIcon;
+        var articleApiUrl = config.externalMarkers[name].articleApiUrl;
         var target;
         var external;
 
@@ -3248,22 +3255,11 @@ var ECM = (function($)
                 external = config.externalMarkers[name].external;
             }
 
-            // Use first category icon by default
-            /*if (data.places[i].categories[0] && data.places[i].categories[0].icon) 
-            {
-                icon = data.places[i].categories[0].icon;
-            }
-            else */
-            if (data.places[i].source.icon) 
-            {
-                // No category icon, use source icon
-                icon = data.places[i].source.icon;
-            }
-
             marker = {
                 id: data.places[i].id,
                 name: name,
                 title: data.places[i].title,
+                description: data.places[i].description,
                 slug: data.places[i].slug,
                 image: data.places[i].image,
                 latitude: parseFloat(data.places[i].latitude),
@@ -3273,6 +3269,11 @@ var ECM = (function($)
                 icon: icon,
                 external: external
             };
+
+            if (notEmpty(articleApiUrl))
+            {
+                marker.articleApiUrl = articleApiUrl;
+            }
 
             // Set article api url using history
             /*if (config.routing && config.externalMarkers[name].slug && config.externalMarkers[name].articleApiUrl)
@@ -3296,48 +3297,41 @@ var ECM = (function($)
                 external = config.externalMarkers[name].external;
             }
 
-            // Use first category icon by default
-            /*if (data.routes[i].categories[0] && data.routes[i].categories[0].icon) 
-            {
-                icon = data.routes[i].categories[0].icon;
-            }
-            else */
-            if (data.routes[i].source.icon) 
-            {
-                // No category icon, use source icon
-                icon = data.routes[i].source.icon;
-            }
-
             marker = {
                 id: data.routes[i].id,
                 name: name,
                 title: data.routes[i].title,
                 slug: data.routes[i].slug,
                 image: data.routes[i].image,
-                latitude: parseFloat(data.routes[i].waypoints[0].lat),
-                longitude: parseFloat(data.routes[i].waypoints[0].lng),
+                latitude: parseFloat(data.routes[i].waypoints[0][0].lat),
+                longitude: parseFloat(data.routes[i].waypoints[0][0].lng),
                 url: data.routes[i].url,
                 target: target,
                 icon: icon,
                 external: external
             };
 
-            route = {
-                id: data.routes[i].id,
-                title: data.routes[i].title,
-                image: data.routes[i].image,
-                polylineOptions: {
-                    "strokeColor": "#0099ff",
-                    "strokeOpacity": 1,
-                    "strokeWeight": 5
-                },
-                waypoints: data.routes[i].waypoints
-            };
-
-            externalRoutesJSON[name].push(route);
-            renderExternalPolylines(name, externalRoutesJSON[name].length-1);
-
             externalMarkersJSON[name].push(marker);
+
+            // Parse each segment to own route
+            var segments = data.routes[i].waypoints;
+
+            for (var j = 0; j < segments.length; j++) {
+                route = {
+                    id: data.routes[i].id,
+                    title: data.routes[i].title,
+                    image: data.routes[i].image,
+                    polylineOptions: {
+                        "strokeColor": "#0099ff",
+                        "strokeOpacity": 1,
+                        "strokeWeight": 5
+                    },
+                    waypoints: segments[j]
+                };
+
+                externalRoutesJSON[name].push(route);
+                renderExternalPolylines(name, externalRoutesJSON[name].length-1);
+            }
         }
 
         setExternalMarkers(name);
@@ -3817,7 +3811,7 @@ var ECM = (function($)
      */
     var notEmpty = function(val)
     {
-        return val !== 'undefined' && val !== null && val != '';
+        return val !== undefined && val !== null && val != '';
     };
 
    /**

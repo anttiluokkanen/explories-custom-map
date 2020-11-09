@@ -6,6 +6,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [1.3.7] - 2020-11-09
+### Changed
+- convertLocationsDB2ECM to treat routes as a two-dimensional array
+- convertLocationsDB2ECM to add description to marker object
+
+### Fixed
+- Unnecessary external icon in some infowindows
+- Display any article as clickable if it has an articleApiUrl
+
 ## [1.3.6] - 2020-10-06
 ### Added
 - Conversion function convertLocationsDB2ECM.

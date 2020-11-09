@@ -67,6 +67,8 @@ Use the shortcode ```[ecm-map]```.
 Use the shortcode ```[ecm-map feed="1"]```.
 
 ## Changelog
+### 1.1.4 (2020-11-09)
+- Updated `explories-custom-map` application.
 ### 1.1.3 (2020-10-08)
 - Updated `explories-custom-map` application.
 ### 1.1.2 (2020-09-13)

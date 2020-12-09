@@ -165,7 +165,7 @@ html {
 
 html, body {
     overflow-y: hidden;
-	-webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch;
     height: 100% !important;
     height: 100vh !important;
 }
@@ -213,82 +213,82 @@ html, body {
 
 /* Range slider styles */
 #ecm input[type=range] {
-  -webkit-appearance: none;
-  width: 100%;
-  margin: 0 0 10px 0;
-  border: none;
+    -webkit-appearance: none;
+    width: 100%;
+    margin: 0 0 10px 0;
+    border: none;
 }
 #ecm input[type=range]:focus {
-  outline: none;
+    outline: none;
 }
 #ecm input[type=range]::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 2px;
-  cursor: pointer;
-  background: #ddd;
-  border-radius: 0px;
-  border: none;
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background: #ddd;
+    border-radius: 0px;
+    border: none;
 }
 #ecm input[type=range]::-webkit-slider-thumb {
-  border: none;
-  height: 24px;
-  width: 24px;
-  border-radius: 12px;
-  background: #0280c2;
-  cursor: pointer;
-  -webkit-appearance: none;
-  margin-top: -10.5px;
+    border: none;
+    height: 24px;
+    width: 24px;
+    border-radius: 12px;
+    background: #0280c2;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -10.5px;
 }
 #ecm input[type=range]:focus::-webkit-slider-runnable-track {
-  background: #ddd;
+    background: #ddd;
 }
 #ecm input[type=range]::-moz-range-track {
-  width: 100%;
-  height: 2px;
-  cursor: pointer;
-  background: #ddd;
-  border: none;
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background: #ddd;
+    border: none;
 }
 #ecm input[type=range]::-moz-range-thumb {
-  border: none;
-  height: 24px;
-  width: 24px;
-  border-radius: 12px;
-  background: #0280c2;
-  cursor: pointer;
+    border: none;
+    height: 24px;
+    width: 24px;
+    border-radius: 12px;
+    background: #0280c2;
+    cursor: pointer;
 }
 #ecm input[type=range]::-ms-track {
-  width: 100%;
-  height: 2px;
-  cursor: pointer;
-  background: transparent;
-  border-color: transparent;
-  color: transparent;
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
 }
 #ecm input[type=range]::-ms-fill-lower {
-  background: #ddd;
-  border: none;
-  border-radius: 0px;
+    background: #ddd;
+    border: none;
+    border-radius: 0px;
 }
 #ecm input[type=range]::-ms-fill-upper {
-  background: #ddd;
-  border: none;
-  border-radius: 0px;
+    background: #ddd;
+    border: none;
+    border-radius: 0px;
 }
 #ecm input[type=range]::-ms-thumb {
-  border: none;
-  height: 24px;
-  width: 24px;
-  border-radius: 12px;
-  background: #0280c2;
-  cursor: pointer;
-  height: 2px;
+    border: none;
+    height: 24px;
+    width: 24px;
+    border-radius: 12px;
+    background: #0280c2;
+    cursor: pointer;
+    height: 2px;
 }
 #ecm input[type=range]:focus::-ms-fill-lower {
-  background: #ddd;
+    background: #ddd;
 }
 #ecm input[type=range]:focus::-ms-fill-upper {
-  background: #ddd;
+    background: #ddd;
 }
 
 #ecm select {
@@ -796,7 +796,7 @@ svg[data-src] {
     min-height: 100%;
 }
 
-.ecm-cards .ecm-card {
+.ecm-cards .ecm-card-wrapper {
     box-sizing: content-box !important;
     width: 320px;
     height: 360px;
@@ -806,13 +806,35 @@ svg[data-src] {
     overflow: hidden;
 }
 
-#ecm .ecm-card {
+#ecm .ecm-card-wrapper {
     position: relative;
     display: block;
     background-color: #fff;
     text-align: center;
     color: #000;
     border-radius: 8px;
+}
+
+#ecm .ecm-card-wrapper > a {
+    color: #000;
+}
+
+.gpx-button {
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+    color: #fff !important;
+    background-color: #0280C2 !important;
+}
+
+.ecm-cards .ecm-card-wrapper .gpx-button {
+    position: absolute;
+}
+
+a.ecm-btn {
+    background-color: #000;
+    display: inline-block;
+    margin-top: 10px;
 }
 
 .ecm-card:hover {
@@ -1126,13 +1148,13 @@ ul.ecm-share a {
     float: right !important;
 }
 .text-left {
-     text-align: left !important;
+    text-align: left !important;
 }
 .text-right {
-     text-align: right !important;
+    text-align: right !important;
 }
 .text-center {
-     text-align: center !important;
+    text-align: center !important;
 }
 .text-hidden {
     text-indent: 200%;
@@ -1161,10 +1183,10 @@ ul.ecm-share a {
 
 /* Fix infowindow img overflow issue on iOS */
 @supports (-webkit-overflow-scrolling: touch) {
-  /* CSS specific to iOS devices */
-  .gm-style .gm-style-iw-c {
-      padding: 12px !important;
-  }
+    /* CSS specific to iOS devices */
+    .gm-style .gm-style-iw-c {
+        padding: 12px !important;
+    }
 }
 
 
@@ -1249,11 +1271,11 @@ button.gm-ui-hover-effect {
 
 #ecm.dark input[type=range]::-webkit-slider-runnable-track,
 #ecm.dark input[type=range]:focus::-webkit-slider-runnable-track {
-  background: #333;
+    background: #333;
 }
 
 #ecm.dark input[type=range]::-moz-range-track {
-  background: #333;
+    background: #333;
 }
 
 #ecm.dark input[type=range]::-ms-fill-lower,
@@ -1338,42 +1360,42 @@ button.gm-ui-hover-effect {
 }
 
 @-moz-keyframes pulsate {
-	0% {
-		-moz-transform: scale(0.25);
-		border: 3px solid rgba(0, 102, 204, 1);
-	}
-	100% {
-		-moz-transform: scale(1.3);
-		border: 3px solid rgba(0, 102, 204, 0);
-	}
+    0% {
+        -moz-transform: scale(0.25);
+        border: 3px solid rgba(0, 102, 204, 1);
+    }
+    100% {
+        -moz-transform: scale(1.3);
+        border: 3px solid rgba(0, 102, 204, 0);
+    }
 }
 @-o-keyframes pulsate {
-	0% {
-		-o-transform: scale(0.25);
-		border: 3px solid rgba(0, 102, 204, 1);
-	}
-	100% {
-		-o-transform: scale(1.3);
-		border: 3px solid rgba(0, 102, 204, 0);
-	}
+    0% {
+        -o-transform: scale(0.25);
+        border: 3px solid rgba(0, 102, 204, 1);
+    }
+    100% {
+        -o-transform: scale(1.3);
+        border: 3px solid rgba(0, 102, 204, 0);
+    }
 }
 @-webkit-keyframes pulsate {
-	0% {
-		-webkit-transform: scale(0.25);
-		border: 3px solid rgba(0, 102, 204, 1);
-	}
-	100% {
-		-webkit-transform: scale(1.3);
-		border: 3px solid rgba(0, 102, 204, 0);
-	}
+    0% {
+        -webkit-transform: scale(0.25);
+        border: 3px solid rgba(0, 102, 204, 1);
+    }
+    100% {
+        -webkit-transform: scale(1.3);
+        border: 3px solid rgba(0, 102, 204, 0);
+    }
 }
 @keyframes pulsate {
-	0% {
-		transform: scale(0.25);
-		border: 3px solid rgba(0, 102, 204, 1);
-	}
-	100% {
-		transform: scale(1.3);
-		border: 3px solid rgba(0, 102, 204, 0);
-	}
+    0% {
+        transform: scale(0.25);
+        border: 3px solid rgba(0, 102, 204, 1);
+    }
+    100% {
+        transform: scale(1.3);
+        border: 3px solid rgba(0, 102, 204, 0);
+    }
 }

@@ -7,6 +7,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.3.8] - 2020-12-09
+### Added
+- Download GPX button to content with `hasGpx == true`. Works only with convertLocationsDB2ECM function and uses the Locations API for downloading.
+- images/icon-download.svg
+
+### Fixed
+- Routes would show even if the category (filter) is not selected
+
 ## [1.3.7] - 2020-11-09
 ### Changed
 - convertLocationsDB2ECM to treat routes as a two-dimensional array

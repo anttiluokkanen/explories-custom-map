@@ -2,7 +2,7 @@
  * ECM.js
  * @copyright   2018 Fakiirimedia Oy
  * @author      Hape Haavikko <hape.haavikko@fakiirimedia.com>
- * @version     1.3.7
+ * @version     1.3.8
  */
 var ECM = (function($)
 {
@@ -1743,7 +1743,7 @@ var ECM = (function($)
             }
 
             // Check if filters set and if the routes mathces the filters
-            if (filters !== null && ! matchesFilters(routesJSON[i]))
+            if ((filters === null) || filters !== null && ! matchesFilters(routesJSON[i]))
             {
                 continue;
             }
@@ -2345,6 +2345,7 @@ var ECM = (function($)
     var createCard = function(obj)
     {
         var articleApiUrl;
+        var $cardContainer = $('<div class="ecm-card-wrapper text-center"></div>');
         var $card = $('<a class="ecm-card"></a>');
 
         if (obj.external)
@@ -2504,7 +2505,15 @@ var ECM = (function($)
             $card.attr("data-article-slug", obj.slug);
         }
 
-        return $card[0].outerHTML;
+        $cardContainer.append($card);
+
+        if (obj.hasGpx)
+        {
+            var $gpxLink = $('<a target="_blank" href="https://locations.explories.net/api/routes/' + obj.id + '/gpx" class="ecm-btn gpx-button"><img src="' + dirPath + 'images/icon-download.svg" style="width: 24px; height: 24px; vertical-align: middle;" />GPX</a>');
+            $cardContainer.append($gpxLink);
+        }
+
+        return $cardContainer[0].outerHTML;
     };
 
     var createModeButtons = function()
@@ -3308,7 +3317,8 @@ var ECM = (function($)
                 url: data.routes[i].url,
                 target: target,
                 icon: icon,
-                external: external
+                external: external,
+                hasGpx: data.routes[i].hasGpx
             };
 
             externalMarkersJSON[name].push(marker);
@@ -3326,7 +3336,8 @@ var ECM = (function($)
                         "strokeOpacity": 1,
                         "strokeWeight": 5
                     },
-                    waypoints: segments[j]
+                    waypoints: segments[j],
+                    hasGpx: data.routes[i].hasGpx
                 };
 
                 externalRoutesJSON[name].push(route);

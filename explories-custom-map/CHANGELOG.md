@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.9] - 2020-12-11
+### Added
+- Allow {lan} placeholder for language shortcode in external sources
 
 ## [1.3.8] - 2020-12-09
 ### Added

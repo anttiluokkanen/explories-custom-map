@@ -2,7 +2,7 @@
  * ECM.js
  * @copyright   2018 Fakiirimedia Oy
  * @author      Hape Haavikko <hape.haavikko@fakiirimedia.com>
- * @version     1.3.8
+ * @version     1.3.9
  */
 var ECM = (function($)
 {
@@ -755,6 +755,7 @@ var ECM = (function($)
         url = url.replace('{east}', bounds.getNorthEast().lng());
         url = url.replace('{south}', bounds.getSouthWest().lat());
         url = url.replace('{west}', bounds.getSouthWest().lng());
+        url = url.replace('{lan}', config.lan);
 
         // Abort previous request for same type if exists
         if (jqxhrExternalMarkers[name])

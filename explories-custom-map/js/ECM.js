@@ -511,7 +511,11 @@ var ECM = (function($)
         // This currently works only on sites with GTranslate
         google.maps.event.addListener(infoWindow, 'content_changed', function() {
             if (typeof doGTranslate === 'function' && typeof GTranslateGetCurrentLang === 'function') {
-                doGTranslate(GTranslateGetCurrentLang());
+                var language = GTranslateGetCurrentLang();
+                // Prevent doGTranslate if language is null (i.e. default language)
+                if (language) {
+                    doGTranslate(language);
+                }
             }
         });
 

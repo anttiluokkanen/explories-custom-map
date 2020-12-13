@@ -2,7 +2,7 @@
  * ECM.js
  * @copyright   2018 Fakiirimedia Oy
  * @author      Hape Haavikko <hape.haavikko@fakiirimedia.com>
- * @version     1.3.9
+ * @version     1.3.10
  */
 var ECM = (function($)
 {
@@ -505,6 +505,14 @@ var ECM = (function($)
         infoWindow = new google.maps.InfoWindow({
           maxWidth: 320,
           content: ''
+        });
+
+        // Fire the translate event when info window opens
+        // This currently works only on sites with GTranslate
+        google.maps.event.addListener(infoWindow, 'content_changed', function() {
+            if (typeof doGTranslate === 'function' && typeof GTranslateGetCurrentLang === 'function') {
+                doGTranslate(GTranslateGetCurrentLang());
+            }
         });
 
         map.addListener('zoom_changed', function() {
@@ -1374,6 +1382,8 @@ var ECM = (function($)
      */
     var openArticle = function(articleId, apiUrl)
     {
+        // TODO: Refactor to allow applying config from theme configuration
+
         // Default is Explories API
         var articleApiUrl = 'https://explori.es/api/news/';
 
@@ -1510,6 +1520,13 @@ var ECM = (function($)
             $articleContainer.find(".ecm-article").append($shareUl);
 
             $articleContainer.find(".ecm-loader").remove();
+
+            // Add 'notranslate' class to avoid translating content that has already been translated or should
+            // not be translated for some other reason
+            // Currently works only with GTranslate
+            if (article.allowTranslate === false) {
+                $articleContainer.addClass('notranslate');
+            }
         });
 
         jqxhr.fail(function(jqxhr, textStatus, error) {
@@ -2504,6 +2521,12 @@ var ECM = (function($)
             $card.attr("data-article-source", config.externalMarkers[obj.name].slug);
             $card.attr("data-article-id", obj.id);
             $card.attr("data-article-slug", obj.slug);
+        }
+
+        // Add 'notranslate' class if the info window content shouldn't be translated
+        // Currently works only with GTranslate
+        if (config.externalMarkers[obj.name].allowTranslate === false) {
+            $card.addClass("notranslate");
         }
 
         $cardContainer.append($card);

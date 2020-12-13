@@ -399,7 +399,8 @@ function generate_ecm_map($atts)
 		'zoom' => get_ecm_option('zoom'),
 		'initmode' => get_ecm_option('mode'),
 		'lat' => $lat,
-		'lng' => $lng
+		'lng' => $lng,
+        'ecmUrl' => get_page_link()
 	];
 
 	wp_localize_script('ecmFront', 'ecmWP_front', $front);

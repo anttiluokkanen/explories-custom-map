@@ -5,5 +5,6 @@ ECM.setConfig({
     lan: ecmWP_front.lan,
     mapInitZoom: parseInt(ecmWP_front.zoom),
     initMode: ecmWP_front.initmode,
-    initLocation: {lat: parseFloat(ecmWP_front.lat), lng: parseFloat(ecmWP_front.lng)}
+    initLocation: {lat: parseFloat(ecmWP_front.lat), lng: parseFloat(ecmWP_front.lng)},
+    ecmUrl: ecmWP_front.ecmUrl
 });

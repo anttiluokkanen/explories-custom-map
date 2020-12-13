@@ -6,6 +6,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.10] - 2020-12-13
+### Added
+- Support for `BOOL allowTranslate` property for external sources to prevent translating content
+- Extra event when info window changes content to fire automatic translation (if available)
+
 ## [1.3.9] - 2020-12-11
 ### Added
 - Allow {lan} placeholder for language shortcode in external sources

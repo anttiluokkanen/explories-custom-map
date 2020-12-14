@@ -2529,7 +2529,7 @@ var ECM = (function($)
 
         // Add 'notranslate' class if the info window content shouldn't be translated
         // Currently works only with GTranslate
-        if (config.externalMarkers[obj.name].allowTranslate === false) {
+        if (config.externalMarkers && config.externalMarkers[obj.name] && config.externalMarkers[obj.name].allowTranslate === false) {
             $card.addClass("notranslate");
         }
 

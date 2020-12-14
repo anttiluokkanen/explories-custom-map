@@ -67,7 +67,7 @@ Use the shortcode ```[ecm-map]```.
 Use the shortcode ```[ecm-map feed="1"]```.
 
 ## Changelog
-### 1.1.8 (2020-12-13)
+### 1.1.9 (2020-12-14)
 - Updated `explories-custom-map` application.
 - Added support for displaying map on multiple pages
 ### 1.1.6 (2020-12-11)

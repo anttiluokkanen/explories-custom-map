@@ -2,7 +2,7 @@
  * ECM.js
  * @copyright   2018 Fakiirimedia Oy
  * @author      Hape Haavikko <hape.haavikko@fakiirimedia.com>
- * @version     1.3.10
+ * @version     1.3.11
  */
 var ECM = (function($)
 {
@@ -3192,8 +3192,17 @@ var ECM = (function($)
     {
         externalMarkersJSON[name] = [];
 
+        const excludeIds = config.externalMarkers[name].excludeIds && new Set(config.externalMarkers[name].excludeIds);
+
         for (var i = 0; i < data.length; i++)
         {
+            if (excludeIds) {
+                if (excludeIds.has(data[i].id)) {
+                    // Skip the article because it's meant to be excluded
+                    continue;
+                }
+            }
+            
             // Use thumbnail if images not defined
             if (! data[i].images)
             {

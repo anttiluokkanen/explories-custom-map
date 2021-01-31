@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.11] - 2021-01-31
+### Added
+- excludeIds property to convertLN2ECM function that can be managed from theme config
+
 ## [1.3.10] - 2020-12-13
 ### Added
 - Support for `BOOL allowTranslate` property for external sources to prevent translating content

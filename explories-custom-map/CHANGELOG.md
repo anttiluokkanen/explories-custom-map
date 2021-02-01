@@ -6,6 +6,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.12] - 2021-02-01
+### Added
+- {lan} placeholder conversion in articleApiUrl like in url
+- Converts all links in article body to `target="_blank"`
+
 ## [1.3.11] - 2021-01-31
 ### Added
 - excludeIds property to convertLN2ECM function that can be managed from theme config

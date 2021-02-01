@@ -2,7 +2,7 @@
  * ECM.js
  * @copyright   2018 Fakiirimedia Oy
  * @author      Hape Haavikko <hape.haavikko@fakiirimedia.com>
- * @version     1.3.11
+ * @version     1.3.12
  */
 var ECM = (function($)
 {
@@ -1441,6 +1441,9 @@ var ECM = (function($)
                 $body.html(article.content);
             }
 
+            // Make all links in the article body to open in new tab
+            $body.find("a").attr("target", "_blank");
+
             // Add publication logo if exists
             if (typeof article.publication !== 'undefined' && notEmpty(article.publication.image))
             {
@@ -2521,6 +2524,7 @@ var ECM = (function($)
         {
             //console.log(obj);
             articleApiUrl = config.externalMarkers[obj.name].articleApiUrl.replace('{id}', obj.id);
+            articleApiUrl = articleApiUrl.replace('{lan}', config.lan);
             $card.attr("data-article-api-url", articleApiUrl);
             $card.attr("data-article-source", config.externalMarkers[obj.name].slug);
             $card.attr("data-article-id", obj.id);

@@ -144,6 +144,7 @@ function ecm_rewrite()
 		add_rewrite_rule('^(.*)/ecm-view/([^/]*)/?', 'index.php?pagename=$matches[1]&static=true&explories=$matches[2]', 'top');
 
 		// site-url/map-page-slug/site-name-slug/article-id/article-title/
+		add_rewrite_rule("{$map_page}/([^/]*)/([^/]*)/([^/]*)?", 'index.php?pagename='.$map_page.'&static=true&explories_site_slug=$matches[1]&explories_article_id=$matches[2]&explories_article_slug=$matches[3]', 'top');
 		add_rewrite_rule("^(.*)/{$map_page}/([^/]*)/([^/]*)/([^/]*)?", 'index.php?pagename=$matches[1]&static=true&explories_site_slug=$matches[2]&explories_article_id=$matches[3]&explories_article_slug=$matches[4]', 'top');
 	}
 }

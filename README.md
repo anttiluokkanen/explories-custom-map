@@ -67,7 +67,8 @@ Use the shortcode ```[ecm-map]```.
 Use the shortcode ```[ecm-map feed="1"]```.
 
 ## Changelog
-
+### 1.1.13 (2021-03-17)
+- Updated `explories-custom-map` application.
 ### 1.1.12 (2021-02-11)
 - Fixed WP rewrites.
 

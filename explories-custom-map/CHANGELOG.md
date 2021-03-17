@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.13] - 2021-03-17
+### Added
+- Display alert if ECM has no permission to access location
+
 ## [1.3.12] - 2021-02-01
 ### Added
 - {lan} placeholder conversion in articleApiUrl like in url

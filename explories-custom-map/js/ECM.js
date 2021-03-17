@@ -2,7 +2,7 @@
  * ECM.js
  * @copyright   2018 Fakiirimedia Oy
  * @author      Hape Haavikko <hape.haavikko@fakiirimedia.com>
- * @version     1.3.12
+ * @version     1.3.13
  */
 var ECM = (function($)
 {
@@ -122,6 +122,7 @@ var ECM = (function($)
             myLocation: 'My location',
             myLocationShow: 'Show my location',
             myLocationCenter: 'Center my location on map',
+            myLocationNoPermissionInfo: 'Location is not allowed in browser settings.',
             roadmap: 'Roadmap',
             route: 'Route',
             satellite: 'Satellite',
@@ -142,6 +143,7 @@ var ECM = (function($)
             myLocation: 'Oma sijainti',
             myLocationShow: 'Näytä sijaintini kartalla',
             myLocationCenter: 'Keskitä kartta sijaintini mukaan',
+            myLocationNoPermissionInfo: 'Selaimen asetukset estävät sijainnin hakemisen.',
             roadmap: 'Tiekartta',
             route: 'Reitti',
             satellite: 'Satelliitti',
@@ -663,6 +665,12 @@ var ECM = (function($)
             $(".ecm-btn-location").removeClass("ecm-btn-loading");
             $("#myLocationBtn").prop("disabled", false);
             $(".ecm-btn-location").prop("disabled", false);
+
+            // 1 === PERMISSION_DENIED
+            if (error.code === 1) {
+                alert(texts[config.lan].myLocationNoPermissionInfo);
+            }
+
             console.error('Getting user location failed: ' + error);
         };
 

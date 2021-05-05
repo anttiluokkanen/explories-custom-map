@@ -6,6 +6,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.14] - 2021-05-05
+### Added
+- Highlight routes on mouse hover
+- Alternative default images to be configured in theme. Max one per category.
+- Support localized articles from Locationews/Explories API
+
+### Fixed
+- Allow opening articles from Locations DB
+- Prevent opening articles with no text. Info window retains some data from previous display so it would try to open articles that should not be opened.
+
 ## [1.3.13] - 2021-03-17
 ### Added
 - Display alert if ECM has no permission to access location

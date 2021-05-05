@@ -3357,7 +3357,7 @@ var ECM = (function($)
                 target: target,
                 icon: icon,
                 external: external,
-                hasText: data.places[i].hasText === true
+                hasText: data.places[i].hasText !== false
 
             };
 

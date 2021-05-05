@@ -2,7 +2,7 @@
  * ECM.js
  * @copyright   2018 Fakiirimedia Oy
  * @author      Hape Haavikko <hape.haavikko@fakiirimedia.com>
- * @version     1.3.13
+ * @version     1.3.14
  */
 var ECM = (function($)
 {
@@ -775,6 +775,12 @@ var ECM = (function($)
         url = url.replace('{east}', bounds.getNorthEast().lng());
         url = url.replace('{south}', bounds.getSouthWest().lat());
         url = url.replace('{west}', bounds.getSouthWest().lng());
+
+        if (url.includes('explori.es/api/') && config.lan === 'fi') {
+            // Remove lan parameter from URL if language is 'fi' because API currently cannot handle requests of the content's original language
+            url = url.replace('lan={lan}', '');
+        }
+
         url = url.replace('{lan}', config.lan);
 
         // Abort previous request for same type if exists
@@ -1395,6 +1401,10 @@ var ECM = (function($)
     var openArticle = function(articleId, apiUrl)
     {
         // TODO: Refactor to allow applying config from theme configuration
+        if (typeof apiUrl === 'undefined') {
+            // Does this break something? At least it prevents opening the "undefined" article...
+            return;
+        }
 
         // Default is Explories API
         var articleApiUrl = 'https://explori.es/api/news/';
@@ -2293,6 +2303,22 @@ var ECM = (function($)
 
         externalRoutesJSON[name][routeIndex].length = polyline.getLengthInMeters();
 
+        // Highlight route when mouse is over the polyline
+        google.maps.event.addListener(polyline, 'mouseover', function (event) {
+            this.setOptions({
+                strokeColor: '#8E0DD0',
+                zIndex: 2
+            });
+        });
+
+        // Remove highlight when mouse no longer over the polyline
+        google.maps.event.addListener(polyline, 'mouseout', function (event) {
+            this.setOptions({
+                strokeColor: route.polylineOptions.strokeColor,
+                zIndex: 1
+            });
+        });
+
         google.maps.event.addListener(polyline, 'click', function(e) {
             var route = externalRoutesJSON[name][routeIndex];
             infoWindow.setContent(createCard(route));
@@ -2424,7 +2450,7 @@ var ECM = (function($)
             $card.addClass("ecm-card-no-link");
         }
 
-        if (obj.image || notEmpty(config.cardDefaultImg))
+        if (obj.image || notEmpty(config.externalMarkers[obj.name].externalCardDefaultImg) || notEmpty(config.cardDefaultImg))
         {
             var $imgContainer = $('<div class="ecm-card-img-container"></div>');
             var $img = $('<div class="ecm-card-img"></div>');
@@ -2441,8 +2467,13 @@ var ECM = (function($)
             }
             else
             {
-                // No img, use default image
-                $img.css("background-image", "url('" + config.cardDefaultImg + "')");
+                if (notEmpty(config.externalMarkers[obj.name].externalCardDefaultImg)) {
+                    // Use external source's externalCardDefaultImg if it's defined
+                    $img.css("background-image", "url('" + config.externalMarkers[obj.name].externalCardDefaultImg + "')");
+                } else {
+                    // No img, use default image
+                    $img.css("background-image", "url('" + config.cardDefaultImg + "')");
+                }
                 $img.addClass("ecm-default-img");
             }
 
@@ -2528,7 +2559,7 @@ var ECM = (function($)
         }
 
         // Additional data for external markers to be opened in overlay
-        if (obj.name && config.routing && config.externalMarkers[obj.name].slug && config.externalMarkers[obj.name].articleApiUrl)
+        if (obj.name && config.routing && config.externalMarkers[obj.name].slug && config.externalMarkers[obj.name].articleApiUrl && obj.hasText !== false)
         {
             //console.log(obj);
             articleApiUrl = config.externalMarkers[obj.name].articleApiUrl.replace('{id}', obj.id);
@@ -3214,7 +3245,7 @@ var ECM = (function($)
                     continue;
                 }
             }
-            
+
             // Use thumbnail if images not defined
             if (! data[i].images)
             {
@@ -3325,10 +3356,12 @@ var ECM = (function($)
                 url: data.places[i].url,
                 target: target,
                 icon: icon,
-                external: external
+                external: external,
+                hasText: data.places[i].hasText === true
+
             };
 
-            if (notEmpty(articleApiUrl))
+            if (notEmpty(articleApiUrl) && marker.hasText)
             {
                 marker.articleApiUrl = articleApiUrl;
             }
@@ -3367,8 +3400,14 @@ var ECM = (function($)
                 target: target,
                 icon: icon,
                 external: external,
-                hasGpx: data.routes[i].hasGpx
+                hasGpx: data.routes[i].hasGpx,
+                hasText: data.routes[i].hasText === true
             };
+
+            if (notEmpty(articleApiUrl) && marker.hasText)
+            {
+                marker.articleApiUrl = articleApiUrl;
+            }
 
             externalMarkersJSON[name].push(marker);
 
@@ -3378,7 +3417,9 @@ var ECM = (function($)
             for (var j = 0; j < segments.length; j++) {
                 route = {
                     id: data.routes[i].id,
+                    name: name,
                     title: data.routes[i].title,
+                    slug: data.routes[i].slug,
                     image: data.routes[i].image,
                     polylineOptions: {
                         "strokeColor": "#0099ff",
@@ -3386,8 +3427,14 @@ var ECM = (function($)
                         "strokeWeight": 5
                     },
                     waypoints: segments[j],
-                    hasGpx: data.routes[i].hasGpx
+                    hasGpx: data.routes[i].hasGpx,
+                    hasText: data.routes[i].hasText === true
                 };
+
+                if (notEmpty(articleApiUrl) && marker.hasText)
+                {
+                    route.articleApiUrl = articleApiUrl;
+                }
 
                 externalRoutesJSON[name].push(route);
                 renderExternalPolylines(name, externalRoutesJSON[name].length-1);

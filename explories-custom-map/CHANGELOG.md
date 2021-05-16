@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.15] - 2021-05-16
+### Added
+- Route descriptions to convertLocationsDB2ECM function
+
 ## [1.3.14] - 2021-05-05
 ### Added
 - Highlight routes on mouse hover

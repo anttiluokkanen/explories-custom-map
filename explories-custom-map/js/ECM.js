@@ -2,7 +2,7 @@
  * ECM.js
  * @copyright   2018 Fakiirimedia Oy
  * @author      Hape Haavikko <hape.haavikko@fakiirimedia.com>
- * @version     1.3.14
+ * @version     1.3.15
  */
 var ECM = (function($)
 {
@@ -3392,6 +3392,7 @@ var ECM = (function($)
                 id: data.routes[i].id,
                 name: name,
                 title: data.routes[i].title,
+                description: data.routes[i].description,
                 slug: data.routes[i].slug,
                 image: data.routes[i].image,
                 latitude: parseFloat(data.routes[i].waypoints[0][0].lat),
@@ -3419,6 +3420,7 @@ var ECM = (function($)
                     id: data.routes[i].id,
                     name: name,
                     title: data.routes[i].title,
+                    description: data.routes[i].description,
                     slug: data.routes[i].slug,
                     image: data.routes[i].image,
                     polylineOptions: {

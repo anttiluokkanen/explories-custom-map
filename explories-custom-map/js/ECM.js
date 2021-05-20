@@ -2,7 +2,7 @@
  * ECM.js
  * @copyright   2018 Fakiirimedia Oy
  * @author      Hape Haavikko <hape.haavikko@fakiirimedia.com>
- * @version     1.3.15
+ * @version     1.3.16
  */
 var ECM = (function($)
 {
@@ -505,8 +505,8 @@ var ECM = (function($)
         );
 
         infoWindow = new google.maps.InfoWindow({
-          maxWidth: 320,
-          content: ''
+            maxWidth: 320,
+            content: ''
         });
 
         // Fire the translate event when info window opens
@@ -2199,19 +2199,19 @@ var ECM = (function($)
         }
 
         var outline = new google.maps.Polyline({
-          path: route.waypoints,
-          geodesic: true,
-          strokeColor: "#ffffff",
-          strokeOpacity: 1,
-          strokeWeight: 8
+            path: route.waypoints,
+            geodesic: true,
+            strokeColor: "#ffffff",
+            strokeOpacity: 1,
+            strokeWeight: 8
         });
 
         var polyline = new google.maps.Polyline({
-          path: route.waypoints,
-          geodesic: true,
-          strokeColor: route.polylineOptions.strokeColor,
-          strokeOpacity: route.polylineOptions.strokeOpacity,
-          strokeWeight: route.polylineOptions.strokeWeight
+            path: route.waypoints,
+            geodesic: true,
+            strokeColor: route.polylineOptions.strokeColor,
+            strokeOpacity: route.polylineOptions.strokeOpacity,
+            strokeWeight: route.polylineOptions.strokeWeight
         });
 
         outline.setMap(map);
@@ -2280,19 +2280,19 @@ var ECM = (function($)
         var route = externalRoutesJSON[name][routeIndex];
 
         var outline = new google.maps.Polyline({
-          path: route.waypoints,
-          geodesic: true,
-          strokeColor: "#ffffff",
-          strokeOpacity: 1,
-          strokeWeight: 8
+            path: route.waypoints,
+            geodesic: true,
+            strokeColor: "#ffffff",
+            strokeOpacity: 1,
+            strokeWeight: 8
         });
 
         var polyline = new google.maps.Polyline({
-          path: route.waypoints,
-          geodesic: true,
-          strokeColor: route.polylineOptions.strokeColor,
-          strokeOpacity: route.polylineOptions.strokeOpacity,
-          strokeWeight: route.polylineOptions.strokeWeight
+            path: route.waypoints,
+            geodesic: true,
+            strokeColor: route.polylineOptions.strokeColor,
+            strokeOpacity: route.polylineOptions.strokeOpacity,
+            strokeWeight: route.polylineOptions.strokeWeight
         });
 
         outline.setMap(map);
@@ -2324,6 +2324,31 @@ var ECM = (function($)
             infoWindow.setContent(createCard(route));
             infoWindow.setPosition(e.latLng);
             infoWindow.open(map);
+            google.maps.event.clearListeners(infoWindow, 'domready');
+
+            if (route.name && config.routing && config.externalMarkers[route.name].slug && config.externalMarkers[route.name].articleApiUrl)
+            {
+                // Wait for info window dom to be ready before adding click handler
+                infoWindow.addListener('domready', function() {
+                    //console.log('iw dom ready');
+                    $('.gm-style-iw .ecm-card').click(function(e) {
+                        e.preventDefault();
+
+                        var stateObj = {
+                            view: 'article',
+                            sourceSlug: $(this).attr("data-article-source"),
+                            articleId: $(this).attr("data-article-id"),
+                            articleSlug: $(this).attr("data-article-slug"),
+                            articleApiUrl: $(this).attr("data-article-api-url"),
+                            title: $(this).find("h1").text()
+                        };
+
+                        setHistory(stateObj);
+
+                        openArticle('', stateObj.articleApiUrl);
+                    });
+                });
+            }
         });
     };
 
@@ -3923,24 +3948,24 @@ var ECM = (function($)
         return val !== undefined && val !== null && val != '';
     };
 
-   /**
-    * @param   {string}    dateTime
-    *
-    * @returns {string}
-    */
+    /**
+     * @param   {string}    dateTime
+     *
+     * @returns {string}
+     */
     var formatDateTime = function(dateTime)
     {
-       if (dateTime == undefined || dateTime == null || dateTime == '')
-       {
-           return '';
-       }
+        if (dateTime == undefined || dateTime == null || dateTime == '')
+        {
+            return '';
+        }
 
-       // The replace thingy is for Safari compatibility
-       var date = new Date(dateTime.replace(/-/g, '/'));
+        // The replace thingy is for Safari compatibility
+        var date = new Date(dateTime.replace(/-/g, '/'));
 
-       var formattedDate = date.getDate() + '.' + (date.getMonth() + 1) + '.' +  date.getFullYear();
-       var formattedTime = ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2);
-       return formattedDate + ' ' + formattedTime;
+        var formattedDate = date.getDate() + '.' + (date.getMonth() + 1) + '.' +  date.getFullYear();
+        var formattedTime = ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2);
+        return formattedDate + ' ' + formattedTime;
     };
 
     /**
